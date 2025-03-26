@@ -11,8 +11,11 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\TagsInput;
+use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\BooleanColumn;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Card;
 use App\Forms\Components\MapPicker;
 
 class ExhibitionResource extends Resource
@@ -24,15 +27,30 @@ class ExhibitionResource extends Resource
     {
         return $form
         ->schema([
-            TextInput::make('title')->required()->label('Naam Expositie'),
-            TextInput::make('artist_name')->required()->label('Naam Artiest'),
-            TextInput::make('venue_name')->required()->label('Naam Locatie'),
-            TextInput::make('address')->required()->label('Adres')->columnSpan(2),
-            Textarea::make('description')->label('Beschrijving'),
-            TagsInput::make('tags')->label('Labels / Tags'),
-            Toggle::make('special_event')->label('Special Event'),
-            MapPicker::make('location')->label('Selecteer locatie')
-                ->required(),
+            Grid::make(3)
+                ->schema([
+                    Card::make()
+                        ->columnSpan(2)
+                        ->schema([
+                            TextInput::make('title')->required()->label('Naam Expositie')->columnSpan(1),
+                            TextInput::make('venue_name')->required()->label('Naam Locatie')->columnSpan(1),
+                            TextInput::make('artist_name')->required()->label('Naam Artiest')->columnSpan(1),
+                            Textarea::make('description')->label('Beschrijving')->columnSpan(1),
+                            MapPicker::make('location') 
+                                ->required()
+                                ->label('Selecteer locatie')
+                                ->columnSpan(2),
+                        ]),
+
+                    Card::make()
+                        ->columnSpan(1)
+                        ->schema([
+                            FileUpload::make('image')->label('Expositie Afbeelding')->image()->columnSpan(1),
+                            TextInput::make('image_alt')->label('Alt Text voor Afbeelding')->columnSpan(1),
+                            TagsInput::make('tags')->label('Labels / Tags')->columnSpan(1),
+                            Toggle::make('special_event')->label('Special Event')->columnSpan(1),
+                        ]),
+                ]),
         ]);
     }
 
@@ -46,8 +64,8 @@ class ExhibitionResource extends Resource
                 BooleanColumn::make('special_event')->label('Special Event'),
                 TextColumn::make('created_at')->dateTime()->label('Aangemaakt op'),
             ])
-            ->filters([
-                //
+            ->filters([ 
+                // Define any filters you need here
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -72,3 +90,4 @@ class ExhibitionResource extends Resource
         ];
     }
 }
+
