@@ -12,14 +12,17 @@ return new class extends Migration {
             $table->string('title');
             $table->string('artist_name');
             $table->string('venue_name');
-            $table->string('address');
+            $table->string('address')->nullable();
             $table->decimal('latitude', 10, 7);
             $table->decimal('longitude', 10, 7);
             $table->text('description')->nullable();
             $table->json('tags')->nullable();
             $table->boolean('special_event')->default(false);
+            $table->string('image')->nullable();
+            $table->string('image_alt')->nullable();
             $table->timestamps();
         });
+        
     }
 
     public function down(): void

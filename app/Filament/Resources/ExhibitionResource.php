@@ -8,7 +8,7 @@ use Filament\Forms;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\FileUpload;
@@ -17,6 +17,9 @@ use Filament\Tables\Columns\BooleanColumn;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Card;
 use App\Forms\Components\MapPicker;
+use Illuminate\Support\Facades\Log;
+use Closure;
+
 
 class ExhibitionResource extends Resource
 {
@@ -25,33 +28,33 @@ class ExhibitionResource extends Resource
 
     public static function form(Forms\Form $form): Forms\Form
     {
+        Log::info('Form method aangeroepen');
         return $form
-        ->schema([
-            Grid::make(3)
-                ->schema([
-                    Card::make()
-                        ->columnSpan(2)
-                        ->schema([
-                            TextInput::make('title')->required()->label('Naam Expositie')->columnSpan(1),
-                            TextInput::make('venue_name')->required()->label('Naam Locatie')->columnSpan(1),
-                            TextInput::make('artist_name')->required()->label('Naam Artiest')->columnSpan(1),
-                            Textarea::make('description')->label('Beschrijving')->columnSpan(1),
-                            MapPicker::make('location') 
-                                ->required()
-                                ->label('Selecteer locatie')
-                                ->columnSpan(2),
-                        ]),
+            ->schema([
+                Grid::make(3)
+                    ->schema([
+                        Card::make()
+                            ->columnSpan(2)
+                            ->schema([
+                                TextInput::make('title')->required()->label('Naam Expositie')->columnSpan(1),
+                                TextInput::make('venue_name')->required()->label('Naam Locatie')->columnSpan(1),
+                                TextInput::make('artist_name')->required()->label('Naam Artiest'),
+                                RichEditor::make('description')->label('Beschrijving'),
+                                MapPicker::make('location')
+                                    ->label('Selecteer locatie')
+                                    ->default(fn (?Exhibition $record) => $record ? $record->location : null),
+                            ]),
 
-                    Card::make()
-                        ->columnSpan(1)
-                        ->schema([
-                            FileUpload::make('image')->label('Expositie Afbeelding')->image()->columnSpan(1),
-                            TextInput::make('image_alt')->label('Alt Text voor Afbeelding')->columnSpan(1),
-                            TagsInput::make('tags')->label('Labels / Tags')->columnSpan(1),
-                            Toggle::make('special_event')->label('Special Event')->columnSpan(1),
-                        ]),
-                ]),
-        ]);
+                        Card::make()
+                            ->columnSpan(1)
+                            ->schema([
+                                FileUpload::make('image')->label('Expositie Afbeelding')->image()->columnSpan(1),
+                                TextInput::make('image_alt')->label('Alt Text voor Afbeelding')->columnSpan(1),
+                                TagsInput::make('tags')->label('Labels / Tags')->columnSpan(1),
+                                Toggle::make('special_event')->label('Special Event')->columnSpan(1),
+                            ]),
+                    ])
+            ]);
     }
 
     public static function table(Tables\Table $table): Tables\Table
@@ -64,9 +67,7 @@ class ExhibitionResource extends Resource
                 BooleanColumn::make('special_event')->label('Special Event'),
                 TextColumn::make('created_at')->dateTime()->label('Aangemaakt op'),
             ])
-            ->filters([ 
-                // Define any filters you need here
-            ])
+            ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
@@ -90,4 +91,3 @@ class ExhibitionResource extends Resource
         ];
     }
 }
-

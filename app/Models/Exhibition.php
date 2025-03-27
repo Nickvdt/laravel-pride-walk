@@ -19,10 +19,15 @@ class Exhibition extends Model
         'description',
         'tags',
         'special_event',
+        'image',
+        'image_alt',
     ];
+
 
     protected $casts = [
         'tags' => 'array',
         'special_event' => 'boolean',
+        'location' => 'array',
     ];
+   
 }
