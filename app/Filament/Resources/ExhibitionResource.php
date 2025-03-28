@@ -18,7 +18,8 @@ use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Card;
 use App\Forms\Components\MapPicker;
 use Illuminate\Support\Facades\Log;
-use Closure;
+use Illuminate\Support\Arr;
+
 
 
 class ExhibitionResource extends Resource
@@ -40,9 +41,16 @@ class ExhibitionResource extends Resource
                                 TextInput::make('venue_name')->required()->label('Naam Locatie')->columnSpan(1),
                                 TextInput::make('artist_name')->required()->label('Naam Artiest'),
                                 RichEditor::make('description')->label('Beschrijving'),
-                                MapPicker::make('location')
-                                    ->label('Selecteer locatie')
-                                    ->default(fn (?Exhibition $record) => $record ? $record->location : null),
+
+                                MapPicker::make('map')
+                                    ->label('Selecteer locatie'),
+
+                                TextInput::make('latitude')
+                                    ->label('Latitude'),
+
+                                TextInput::make('longitude')
+                                    ->label('Longitude'),
+
                             ]),
 
                         Card::make()
@@ -89,5 +97,10 @@ class ExhibitionResource extends Resource
             'create' => Pages\CreateExhibition::route('/create'),
             'edit' => Pages\EditExhibition::route('/{record}/edit'),
         ];
+    }
+
+    public static function mutateFormDataBeforeSave(array $data): array
+    {
+        return self::mutateFormDataBeforeCreate($data);
     }
 }
