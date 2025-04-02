@@ -1,4 +1,6 @@
-<div x-data="mapPicker()" x-init="initMap()" class="w-full">
+<div x-data="mapPicker()" x-init="init()" x-effect="checkLocationLoaded()" class="w-full">
+
+
     <div id="map" class="w-full h-96 rounded-lg border border-gray-300 shadow-sm"></div>
 
     <div class="mt-2 flex space-x-2">
@@ -44,16 +46,55 @@
             latitude: 52.3676,
             longitude: 4.9041,
             address: '',
-            location: Alpine.raw({
-                latitude: 52.3676,
-                longitude: 4.9041
-            }),
+            location: null,
+
             map: null,
             marker: null,
             coordControl: null,
 
+            init() {
+                console.log('[init] Alpine component gestart');
+
+                setTimeout(() => {
+                    if (
+                        (!this.location || !this.location.latitude || !this.location.longitude) &&
+                        !this.map
+                    ) {
+                        console.warn('[init > fallback] Geen geldige locatie ontvangen binnen tijd. Fallback naar Amsterdam.');
+                        this.latitude = 52.3676;
+                        this.longitude = 4.9041;
+                        this.initMap();
+                        this.updateLocation();
+                        this.reverseGeocode();
+                    }
+                }, 500);
+            },
+
+
+            checkLocationLoaded() {
+                console.log('[checkLocationLoaded] this.location:', this.location);
+
+                if (this.location === null) {
+                    console.log('[checkLocationLoaded] this.location is null, wachten...');
+                    return;
+                }
+                if (
+                    typeof this.location === 'object' &&
+                    this.location.latitude &&
+                    this.location.longitude &&
+                    !this.map
+                ) {
+                    console.log('[checkLocationLoaded] Geldige locatie ontvangen van Livewire:', this.location);
+                    this.latitude = parseFloat(this.location.latitude);
+                    this.longitude = parseFloat(this.location.longitude);
+                    this.initMap();
+                    return;
+                }
+            },
+
+
             initMap() {
-                this.updateLocation(); // <-- locatie meteen instellen
+                console.log('[initMap] Kaart aanmaken bij', this.latitude, this.longitude);
 
                 this.map = L.map('map').setView([this.latitude, this.longitude], 12);
 
@@ -71,7 +112,7 @@
                     this.longitude = position.lng.toFixed(6);
                     this.reverseGeocode();
                     this.updateCoords();
-                    this.updateLocation(); // <-- NIEUW
+                    this.updateLocation();
                 });
 
                 this.map.on('click', (event) => {
@@ -81,12 +122,13 @@
                     this.marker.setLatLng(position);
                     this.reverseGeocode();
                     this.updateCoords();
-                    this.updateLocation(); // <-- NIEUW
+                    this.updateLocation();
                 });
 
                 this.coordControl = L.control({
                     position: 'bottomright'
                 });
+
                 this.coordControl.onAdd = () => {
                     let div = L.DomUtil.create('div', 'leaflet-control-latlng');
                     div.style.padding = "8px";
@@ -97,12 +139,17 @@
                     div.innerHTML = `Lat: ${this.latitude}, Lng: ${this.longitude}`;
                     return div;
                 };
+
                 this.coordControl.addTo(this.map);
+
+                this.updateCoords();
             },
 
             updateCoords() {
-                document.querySelector('.leaflet-control-latlng').innerHTML =
-                    `Lat: ${this.latitude}, Lng: ${this.longitude}`;
+                const coordBox = document.querySelector('.leaflet-control-latlng');
+                if (coordBox) {
+                    coordBox.innerHTML = `Lat: ${this.latitude}, Lng: ${this.longitude}`;
+                }
             },
 
             updateMarker() {
@@ -120,31 +167,27 @@
             },
 
             updateLocation() {
-                console.log('[updateLocation] current this.location:', this.location); 
+                console.log('[updateLocation] Huidige locatie:', this.location);
 
                 if (!this.location || typeof this.location !== 'object') {
-                    console.warn('[updateLocation] location is missing or not an object, resetting...');
+                    console.warn('[updateLocation] Locatie is leeg, resetten...');
                     this.location = {
                         latitude: this.latitude,
                         longitude: this.longitude
                     };
                 } else {
-                    console.log('[updateLocation] location exists, updating...');
                     this.location.latitude = this.latitude;
                     this.location.longitude = this.longitude;
                 }
 
-                console.log('[updateLocation] updated location:', this.location);
-
                 if (this.$refs.hiddenInput) {
                     this.$refs.hiddenInput.value = JSON.stringify(this.location);
                     this.$refs.hiddenInput.dispatchEvent(new Event('input'));
-                    console.log('[updateLocation] 📨 hidden input dispatched');
+                    console.log('[updateLocation] Hidden input verstuurd');
                 } else {
-                    console.error('[updateLocation] $refs.hiddenInput is not available');
+                    console.error('[updateLocation] $refs.hiddenInput niet gevonden');
                 }
             },
-
 
             geocodeAddress() {
                 if (this.address.trim() === '') return;
@@ -161,14 +204,14 @@
                             this.map.setView([this.latitude, this.longitude], 12);
 
                             this.updateCoords();
-                            this.updateLocation(); // <-- NIEUW
+                            this.updateLocation();
                         } else {
                             alert('Adres niet gevonden.');
                         }
                     })
                     .catch(error => {
                         console.error('Geocoding fout:', error);
-                        alert('Er is een fout opgetreden bij het ophalen van het adres.');
+                        alert('Fout bij ophalen adres.');
                     });
             },
 
@@ -177,7 +220,7 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data && data.address) {
-                            this.address = data.address.road || 'Onbekend adres';
+                            this.address = data.display_name || 'Onbekend adres';
                         } else {
                             this.address = 'Adres niet gevonden';
                         }
@@ -190,6 +233,7 @@
         };
     }
 </script>
+
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
