@@ -3,34 +3,41 @@
 
     <div id="map" class="w-full h-96 rounded-lg border border-gray-300 shadow-sm"></div>
 
-    <div class="mt-2 flex space-x-2">
-        <div class="flex-1">
-            <label for="address" class="block text-sm font-medium text-gray-700">Adres</label>
-            <input type="text" id="address" x-model="address"
+    <div class="flex flex-col  pt-4">
+        <label for="address" class="text-sm font-medium text-white">Adres</label>
+        <div class="flex items-center ">
+            <input
+                type="text"
+                id="address"
+                x-model="address"
                 @keydown.enter.prevent="geocodeAddress()"
-                class="mt-1 block w-full px-3 py-2 bg-[#161617] text-white border border-[#161617] rounded-md shadow-sm focus:ring-[#161617] focus:border-[#161617] sm:text-sm"
-                style="background-color: #161617; color: white;">
-        </div>
-        <div class="flex-shrink-0">
-            <button type="button" @click="geocodeAddress()"
-                class="w-full px-3 py-2 bg-indigo-600 text-white font-medium text-sm rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto">
-                Zoek
+                class="block w-full rounded-lg border-0 bg-transparent py-2 px-3 text-sm text-white ring-1 ring-inset ring-white/10 placeholder-white/40 focus:ring-2 focus:ring-inset focus:ring-white/20 appearance-none"
+                placeholder="Typ een adres..." />
+
+            <button
+                type="button"
+                @click="geocodeAddress()"
+                class="text-white hover:text-white/70 focus:outline-none cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1012 19.5a7.5 7.5 0 004.35-1.85z" />
+                </svg>
             </button>
         </div>
     </div>
-
-    <div class="mt-2 flex space-x-4">
-        <div class="flex-1">
-            <label for="latitude" class="block text-sm font-medium text-gray-700">Latitude</label>
+    <div class="mt-2 flex space-x-4 pt-4">
+        <div class="flex-1 ">
+            <label for="latitude" class="block text-sm font-medium text-white">Latitude</label>
             <input type="number" step="any" id="latitude" x-model="latitude" @input="updateMarker()"
-                class="mt-1 block w-full px-3 py-2 bg-[#161617] text-white border border-[#161617] rounded-md shadow-sm focus:ring-[#161617] focus:border-[#161617] sm:text-sm"
-                style="background-color: #161617; color: white;">
+                class="block w-full rounded-lg border-0 bg-transparent py-2 px-3 text-sm text-white ring-1 ring-inset ring-white/10 placeholder-white/40 focus:ring-2 focus:ring-inset focus:ring-white/20"
+                placeholder="Latitude">
         </div>
         <div class="flex-1">
-            <label for="longitude" class="block text-sm font-medium text-gray-700">Longitude</label>
+            <label for="longitude" class="block text-sm font-medium text-white">Longitude</label>
             <input type="number" step="any" id="longitude" x-model="longitude" @input="updateMarker()"
-                class="mt-1 block w-full px-3 py-2 bg-[#161617] text-white border border-[#161617] rounded-md shadow-sm focus:ring-[#161617] focus:border-[#161617] sm:text-sm"
-                style="background-color: #161617; color: white;">
+                class="block w-full rounded-lg border-0 bg-transparent py-2 px-3 text-sm text-white ring-1 ring-inset ring-white/10 placeholder-white/40 focus:ring-2 focus:ring-inset focus:ring-white/20"
+                placeholder="Longitude">
         </div>
     </div>
 
