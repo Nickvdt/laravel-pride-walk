@@ -13,8 +13,7 @@ return new class extends Migration {
             $table->string('artist_name');
             $table->string('venue_name');
             $table->string('address')->nullable();
-            $table->decimal('latitude', 10, 7);
-            $table->decimal('longitude', 10, 7);
+            $table->json('location')->nullable();
             $table->text('description')->nullable();
             $table->json('tags')->nullable();
             $table->boolean('special_event')->default(false);

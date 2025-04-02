@@ -14,12 +14,11 @@ class Exhibition extends Model
         'artist_name',
         'venue_name',
         'address',
-        'latitude',
-        'longitude',
         'description',
         'tags',
         'special_event',
         'image',
+        'location',
         'image_alt',
     ];
 

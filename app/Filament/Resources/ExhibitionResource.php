@@ -42,14 +42,8 @@ class ExhibitionResource extends Resource
                                 TextInput::make('artist_name')->required()->label('Naam Artiest'),
                                 RichEditor::make('description')->label('Beschrijving'),
 
-                                MapPicker::make('map')
-                                    ->label('Selecteer locatie'),
+                                MapPicker::make('location')->label('Selecteer locatie'),
 
-                                TextInput::make('latitude')
-                                    ->label('Latitude'),
-
-                                TextInput::make('longitude')
-                                    ->label('Longitude'),
 
                             ]),
 
