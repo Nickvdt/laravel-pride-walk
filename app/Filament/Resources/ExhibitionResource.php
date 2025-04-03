@@ -13,13 +13,12 @@ use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\BooleanColumn;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Card;
 use App\Forms\Components\MapPicker;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Arr;
-
+use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Filters\TernaryFilter;
 
 
 class ExhibitionResource extends Resource
@@ -37,23 +36,21 @@ class ExhibitionResource extends Resource
                         Card::make()
                             ->columnSpan(2)
                             ->schema([
-                                TextInput::make('title')->required()->label('Naam Expositie')->columnSpan(1),
-                                TextInput::make('venue_name')->required()->label('Naam Locatie')->columnSpan(1),
-                                TextInput::make('artist_name')->required()->label('Naam Artiest'),
-                                RichEditor::make('description')->label('Beschrijving'),
-
+                                TextInput::make('title')->required()->columnSpan(1),
+                                TextInput::make('venue_name')->required()->columnSpan(1),
+                                TextInput::make('artist_name')->required(),
+                                RichEditor::make('description'),
                                 MapPicker::make('location')->label('Selecteer locatie'),
-
-
                             ]),
 
                         Card::make()
                             ->columnSpan(1)
                             ->schema([
-                                FileUpload::make('image')->label('Expositie Afbeelding')->image()->columnSpan(1),
-                                TextInput::make('image_alt')->label('Alt Text voor Afbeelding')->columnSpan(1),
+                                FileUpload::make('image')->image()->columnSpan(1),
+                                TextInput::make('image_alt')->label('Alt Text for image')->columnSpan(1),
                                 TagsInput::make('tags')->label('Labels / Tags')->columnSpan(1),
                                 Toggle::make('special_event')->label('Special Event')->columnSpan(1),
+                                Toggle::make('is_active')->label('Active')->default(true)->columnSpan(1),
                             ]),
                     ])
             ]);
@@ -66,10 +63,21 @@ class ExhibitionResource extends Resource
                 TextColumn::make('title')->sortable()->searchable(),
                 TextColumn::make('artist_name')->sortable(),
                 TextColumn::make('venue_name')->sortable(),
-                BooleanColumn::make('special_event')->label('Special Event'),
-                TextColumn::make('created_at')->dateTime()->label('Aangemaakt op'),
+                ToggleColumn::make('special_event')->label('Special Event'),
+                ToggleColumn::make('is_active')->label('Active'),
+                TextColumn::make('created_at')->dateTime(),
             ])
-            ->filters([])
+            ->filters([
+                TernaryFilter::make('is_active')
+                    ->label('Toon alleen actieve exposities')
+                    ->nullable()
+                    ->boolean(),
+                    
+                TernaryFilter::make('special_event')
+                    ->label('Toon alleen special events')
+                    ->nullable()
+                    ->boolean(),
+            ])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),

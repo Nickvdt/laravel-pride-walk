@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->text('description')->nullable();
             $table->json('tags')->nullable();
             $table->boolean('special_event')->default(false);
+            $table->boolean('is_active')->default(true);
             $table->string('image')->nullable();
             $table->string('image_alt')->nullable();
             $table->timestamps();

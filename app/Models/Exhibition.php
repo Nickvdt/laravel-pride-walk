@@ -19,6 +19,7 @@ class Exhibition extends Model
         'special_event',
         'image',
         'location',
+        'is_active',
         'image_alt',
     ];
 
@@ -26,6 +27,7 @@ class Exhibition extends Model
     protected $casts = [
         'tags' => 'array',
         'special_event' => 'boolean',
+        'is_active' => 'boolean',
         'location' => 'array',
     ];
    
