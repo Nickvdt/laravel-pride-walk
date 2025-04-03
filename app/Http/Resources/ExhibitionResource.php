@@ -26,7 +26,10 @@ class ExhibitionResource extends JsonResource
             'image' => $this->image,
             'image_alt' => $this->image_alt,
             'is_active' => $this->is_active,
-            'location' => $this->location,
+            'location' => [
+                (float) $this->location['latitude'],
+                (float) $this->location['longitude']
+            ],
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
