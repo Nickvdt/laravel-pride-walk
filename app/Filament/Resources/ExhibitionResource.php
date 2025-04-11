@@ -41,7 +41,7 @@ class ExhibitionResource extends Resource
                             ->schema([
                                 TextInput::make('title')->required()->columnSpan(1),
                                 TextInput::make('venue_name')->required()->columnSpan(1),
-                                TextInput::make('artist_name')->required(),
+                                TagsInput::make('artist_name')->label('Artist name(s)')->required()->placeholder('New Artist'),
                                 RichEditor::make('description'),
                                 Repeater::make('schedules')
                                     ->relationship()

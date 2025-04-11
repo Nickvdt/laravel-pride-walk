@@ -29,6 +29,7 @@ class Exhibition extends Model
         'special_event' => 'boolean',
         'is_active' => 'boolean',
         'location' => 'array',
+        'artist_name' => 'array',
     ];
 
     public function schedules()
