@@ -30,5 +30,9 @@ class Exhibition extends Model
         'is_active' => 'boolean',
         'location' => 'array',
     ];
-   
+
+    public function schedules()
+    {
+        return $this->hasMany(ExhibitionSchedule::class);
+    }
 }

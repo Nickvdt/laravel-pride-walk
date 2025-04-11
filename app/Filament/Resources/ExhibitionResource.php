@@ -19,6 +19,9 @@ use App\Forms\Components\MapPicker;
 use Illuminate\Support\Facades\Log;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\TernaryFilter;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\TimePicker;
 
 
 class ExhibitionResource extends Resource
@@ -40,7 +43,17 @@ class ExhibitionResource extends Resource
                                 TextInput::make('venue_name')->required()->columnSpan(1),
                                 TextInput::make('artist_name')->required(),
                                 RichEditor::make('description'),
-                                MapPicker::make('location')->label('Selecteer locatie'),
+                                Repeater::make('schedules')
+                                    ->relationship()
+                                    ->label('Date and Times')
+                                    ->schema([
+                                        DatePicker::make('date')->required(),
+                                        TimePicker::make('start_time')->label('Starttijd')->required(),
+                                        TimePicker::make('end_time')->label('Eindtijd')->required(),
+                                    ])
+                                    ->columns(3)
+                                    ->defaultItems(1),
+                                MapPicker::make('location')->label('Select location'),
                             ]),
 
                         Card::make()
@@ -72,7 +85,7 @@ class ExhibitionResource extends Resource
                     ->label('Toon alleen actieve exposities')
                     ->nullable()
                     ->boolean(),
-                    
+
                 TernaryFilter::make('special_event')
                     ->label('Toon alleen special events')
                     ->nullable()

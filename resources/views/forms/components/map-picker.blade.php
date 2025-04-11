@@ -1,5 +1,4 @@
-<div x-data="mapPicker()" x-init="init()" x-effect="checkLocationLoaded()" class="w-full">
-
+<div x-data="mapPicker()" x-init="init()" x-effect="checkLocationLoaded()" class="w-full" wire:ignore>
 
     <div id="map" class="w-full h-96 rounded-lg border border-gray-300 shadow-sm"></div>
 
@@ -62,19 +61,21 @@
             init() {
                 console.log('[init] Alpine component gestart');
 
-                setTimeout(() => {
-                    if (
-                        (!this.location || !this.location.latitude || !this.location.longitude) &&
-                        !this.map
-                    ) {
-                        console.warn('[init > fallback] Geen geldige locatie ontvangen binnen tijd. Fallback naar Amsterdam.');
-                        this.latitude = 52.3676;
-                        this.longitude = 4.9041;
-                        this.initMap();
-                        this.updateLocation();
-                        this.reverseGeocode();
-                    }
-                }, 500);
+                this.$nextTick(() => {
+                    setTimeout(() => {
+                        if (
+                            (!this.location || !this.location.latitude || !this.location.longitude) &&
+                            !this.map
+                        ) {
+                            console.warn('[init > fallback] Geen geldige locatie ontvangen binnen tijd. Fallback naar Amsterdam.');
+                            this.latitude = 52.3676;
+                            this.longitude = 4.9041;
+                            this.initMap();
+                            this.updateLocation();
+                            this.reverseGeocode();
+                        }
+                    }, 500);
+                });
             },
 
 
@@ -85,6 +86,7 @@
                     console.log('[checkLocationLoaded] this.location is null, wachten...');
                     return;
                 }
+
                 if (
                     typeof this.location === 'object' &&
                     this.location.latitude &&
@@ -92,10 +94,12 @@
                     !this.map
                 ) {
                     console.log('[checkLocationLoaded] Geldige locatie ontvangen van Livewire:', this.location);
-                    this.latitude = parseFloat(this.location.latitude);
-                    this.longitude = parseFloat(this.location.longitude);
-                    this.initMap();
-                    return;
+
+                    this.$nextTick(() => {
+                        this.latitude = parseFloat(this.location.latitude);
+                        this.longitude = parseFloat(this.location.longitude);
+                        this.initMap();
+                    });
                 }
             },
 
