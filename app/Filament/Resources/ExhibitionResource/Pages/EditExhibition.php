@@ -3,8 +3,8 @@
 namespace App\Filament\Resources\ExhibitionResource\Pages;
 
 use App\Filament\Resources\ExhibitionResource;
-use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Filament\Pages\Actions\Action;
 
 class EditExhibition extends EditRecord
 {
@@ -13,7 +13,10 @@ class EditExhibition extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Action::make('Calendar')
+                ->url(fn () => ExhibitionResource::getUrl('calendar', ['record' => $this->record]))
+                ->color('primary')
+                ->icon('heroicon-o-calendar'),
         ];
     }
 }

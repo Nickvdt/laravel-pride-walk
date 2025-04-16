@@ -14,26 +14,17 @@ class ExhibitionSchedule extends Model
         'date',
         'start_time',
         'end_time',
+        'recurrence_rule',
     ];
 
     protected $casts = [
-        'date' => 'date',
-        'start_time' => 'datetime:H:i',
-        'end_time' => 'datetime:H:i',
+        'date' => 'date:Y-m-d',
+        'start_time' => 'string',
+        'end_time' => 'string',
     ];
 
     public function exhibition()
     {
         return $this->belongsTo(Exhibition::class);
-    }
-
-    public function getFormattedTimeAttribute(): string
-    {
-        return $this->start_time->format('H:i') . ' - ' . $this->end_time->format('H:i');
-    }
-
-    public function getFormattedDateAttribute(): string
-    {
-        return $this->date->format('d M Y');
     }
 }

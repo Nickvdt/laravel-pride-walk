@@ -43,16 +43,6 @@ class ExhibitionResource extends Resource
                                 TextInput::make('venue_name')->required()->columnSpan(1),
                                 TagsInput::make('artist_name')->label('Artist name(s)')->required()->placeholder('New Artist'),
                                 RichEditor::make('description'),
-                                Repeater::make('schedules')
-                                    ->relationship()
-                                    ->label('Date and Times')
-                                    ->schema([
-                                        DatePicker::make('date')->required(),
-                                        TimePicker::make('start_time')->label('Starttijd')->required(),
-                                        TimePicker::make('end_time')->label('Eindtijd')->required(),
-                                    ])
-                                    ->columns(3)
-                                    ->defaultItems(1),
                                 MapPicker::make('location')->label('Select location'),
                             ]),
 
@@ -111,6 +101,7 @@ class ExhibitionResource extends Resource
             'index' => Pages\ListExhibitions::route('/'),
             'create' => Pages\CreateExhibition::route('/create'),
             'edit' => Pages\EditExhibition::route('/{record}/edit'),
+            'calendar' => Pages\ManageCalendar::route('/{record}/calendar'), 
         ];
     }
 
