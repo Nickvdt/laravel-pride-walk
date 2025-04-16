@@ -19,7 +19,6 @@ class ExhibitionResource extends JsonResource
             'title' => $this->title,
             'artist_name' => $this->artist_name,
             'venue_name' => $this->venue_name,
-            'address' => $this->address,
             'description' => $this->description,
             'tags' => $this->tags,
             'special_event' => $this->special_event,
@@ -28,8 +27,9 @@ class ExhibitionResource extends JsonResource
             'is_active' => $this->is_active,
             'location' => [
                 (float) $this->location['latitude'],
-                (float) $this->location['longitude']
+                (float) $this->location['longitude'],
             ],
+            'address' => $this->location['address'],
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

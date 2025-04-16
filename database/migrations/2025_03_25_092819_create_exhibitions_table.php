@@ -12,7 +12,6 @@ return new class extends Migration {
             $table->string('title');
             $table->string('artist_name');
             $table->string('venue_name');
-            $table->string('address')->nullable();
             $table->json('location')->nullable();
             $table->text('description')->nullable();
             $table->json('tags')->nullable();

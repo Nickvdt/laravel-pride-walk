@@ -13,7 +13,6 @@ class Exhibition extends Model
         'title',
         'artist_name',
         'venue_name',
-        'address',
         'description',
         'tags',
         'special_event',

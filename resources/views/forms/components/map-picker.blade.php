@@ -10,6 +10,7 @@
                 id="address"
                 x-model="address"
                 @keydown.enter.prevent="geocodeAddress()"
+                @input="updateLocation()"
                 class="block w-full rounded-lg border-0 bg-transparent py-2 px-3 text-sm text-white ring-1 ring-inset ring-white/10 placeholder-white/40 focus:ring-2 focus:ring-inset focus:ring-white/20 appearance-none"
                 placeholder="Typ een adres..." />
 
@@ -98,6 +99,7 @@
                     this.$nextTick(() => {
                         this.latitude = parseFloat(this.location.latitude);
                         this.longitude = parseFloat(this.location.longitude);
+                        this.address = this.location.address || '';
                         this.initMap();
                     });
                 }
@@ -180,16 +182,11 @@
             updateLocation() {
                 console.log('[updateLocation] Huidige locatie:', this.location);
 
-                if (!this.location || typeof this.location !== 'object') {
-                    console.warn('[updateLocation] Locatie is leeg, resetten...');
-                    this.location = {
-                        latitude: this.latitude,
-                        longitude: this.longitude
-                    };
-                } else {
-                    this.location.latitude = this.latitude;
-                    this.location.longitude = this.longitude;
-                }
+                this.location = {
+                    latitude: this.latitude,
+                    longitude: this.longitude,
+                    address: this.address
+                };
 
                 if (this.$refs.hiddenInput) {
                     this.$refs.hiddenInput.value = JSON.stringify(this.location);
@@ -231,18 +228,27 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data && data.address) {
-                            this.address = data.display_name || 'Onbekend adres';
+                            const addr = data.address;
+                            this.address = [
+                                addr.road || addr.park || addr.neighbourhood,
+                                addr.postcode,
+                                addr.city || addr.town,
+                                addr.state
+                            ].filter(Boolean).join(', ');
                         } else {
                             this.address = 'Adres niet gevonden';
                         }
+
+                        this.updateLocation();
                     })
                     .catch(error => {
                         console.error('Reverse geocoding fout:', error);
                         this.address = 'Fout bij ophalen adres';
+                        this.updateLocation();
                     });
+                }
             }
-        };
-    }
+        }
 </script>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
