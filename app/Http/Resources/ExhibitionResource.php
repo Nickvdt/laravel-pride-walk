@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-
+use App\Http\Resources\ExhibitionScheduleResource;
 class ExhibitionResource extends JsonResource
 {
     /**
@@ -12,6 +12,7 @@ class ExhibitionResource extends JsonResource
      *
      * @return array<string, mixed>
      */
+
     public function toArray(Request $request): array
     {
         return [
@@ -29,9 +30,11 @@ class ExhibitionResource extends JsonResource
                 (float) $this->location['latitude'],
                 (float) $this->location['longitude'],
             ],
-            'address' => $this->location['address'],
+            'address' => $this->location['address'] ?? null,
+            'schedules' => ExhibitionScheduleResource::collection($this->whenLoaded('schedules')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
     }
+    
 }

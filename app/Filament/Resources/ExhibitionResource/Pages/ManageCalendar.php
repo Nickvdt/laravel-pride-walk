@@ -20,7 +20,7 @@ class ManageCalendar extends EditRecord
 
     public function getTitle(): string
     {
-        return 'Calendar For ' . $this->record->title;
+        return 'Visiting Hours For ' . $this->record->title;
     }
 
     protected function getHeaderActions(): array

@@ -13,10 +13,17 @@ class EditExhibition extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Action::make('Calendar')
-                ->url(fn () => ExhibitionResource::getUrl('calendar', ['record' => $this->record]))
+            Action::make('Visiting Hours')
+                ->requiresConfirmation(false)
+                ->action(function () {
+                    $this->save();
+                })
+                ->after(function () {
+                    return redirect(ExhibitionResource::getUrl('calendar', ['record' => $this->record]));
+                })
                 ->color('primary')
                 ->icon('heroicon-o-calendar'),
         ];
     }
+    
 }
