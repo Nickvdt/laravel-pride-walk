@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\ExhibitionScheduleResource;
+
 class ExhibitionResource extends JsonResource
 {
     /**
@@ -21,7 +22,6 @@ class ExhibitionResource extends JsonResource
             'artist_name' => $this->artist_name,
             'venue_name' => $this->venue_name,
             'description' => $this->description,
-            'tags' => $this->tags,
             'special_event' => $this->special_event,
             'image' => $this->image,
             'image_alt' => $this->image_alt,
@@ -32,9 +32,14 @@ class ExhibitionResource extends JsonResource
             ],
             'address' => $this->location['address'] ?? null,
             'schedules' => ExhibitionScheduleResource::collection($this->whenLoaded('schedules')),
+            'tags' => $this->tags->map(function ($tag) {
+                return [
+                    'id' => $tag->id,
+                    'name' => $tag->name,
+                ];
+            }),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
     }
-    
 }

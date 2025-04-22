@@ -4,12 +4,14 @@ namespace Database\Seeders;
 
 use App\Models\Exhibition;
 use Illuminate\Database\Seeder;
+use App\Models\Tag;
 
 class ExhibitionSeeder extends Seeder
 {
     public function run()
     {
-        Exhibition::create([
+        $exhibitions = [
+        [
             'title' => 'PEEKABOO',
             'artist_name' => ['overview'],
             'venue_name' => 'Internationaal Theater Amsterdam',
@@ -24,9 +26,9 @@ class ExhibitionSeeder extends Seeder
                 'address' => 'Leidseplein 26, 1017 PT Amsterdam'
             ],
             'is_active' => true,
-        ]);
+        ],
 
-        Exhibition::create([
+        [
             'title' => 'Queer in the Church',
             'artist_name' => ['Arjan Spannenburg', 'Frans Franciscus', 'MVS'],
             'venue_name' => 'Oude Lutherse Kerk',
@@ -41,8 +43,8 @@ class ExhibitionSeeder extends Seeder
                 'address' => 'Singel 411, 1012 WN Amsterdam'
             ],
             'is_active' => true,
-        ]);
-        Exhibition::create([
+        ],
+        [
             'title' => 'onbekend',
             'artist_name' => ['Ton of Holland'],
             'venue_name' => 'Galerie MAI',
@@ -57,9 +59,9 @@ class ExhibitionSeeder extends Seeder
                 'address' => 'Geldersekade 30, 1012 BJ Amsterdam'
             ],
             'is_active' => true,
-        ]);
+        ],
 
-        Exhibition::create([
+        [
             'title' => 'onbekend',
             'artist_name' => ['Maxime de Waal', 'Tim Weerdenburg'],
             'venue_name' => 'Hotel Mercier',
@@ -74,8 +76,8 @@ class ExhibitionSeeder extends Seeder
                 'address' => 'Rozenstraat 12, 1016 NX Amsterdam'
             ],
             'is_active' => true,
-        ]);
-        Exhibition::create([
+        ],
+        [
             'title' => 'Eep Seeber @ Mister B',
             'artist_name' => ['Eep Seeber'],
             'venue_name' => 'Mr. B',
@@ -90,9 +92,9 @@ class ExhibitionSeeder extends Seeder
                 'address' => 'Prinsengracht 192, 1016 HC Amsterdam'
             ],
             'is_active' => true,
-        ]);
+        ],
 
-        Exhibition::create([
+        [
             'title' => 'Paul Derrez',
             'artist_name' => ['Paul Derrez'],
             'venue_name' => '?',
@@ -107,8 +109,8 @@ class ExhibitionSeeder extends Seeder
                 'address' => 'Amsterdam'
             ],
             'is_active' => true,
-        ]);
-        Exhibition::create([
+        ],
+        [
             'title' => 'Carlos Marlo @ Rob',
             'artist_name' => ['Carlos Marló'],
             'venue_name' => 'RoB',
@@ -123,9 +125,9 @@ class ExhibitionSeeder extends Seeder
                 'address' => 'Warmoesstraat 71, 1012 HX Amsterdam'
             ],
             'is_active' => true,
-        ]);
+        ],
 
-        Exhibition::create([
+        [
             'title' => 'Roze Reuzen',
             'artist_name' => ['Uit archief IHLIA'],
             'venue_name' => 'IHLIA 143 (3e verdieping)',
@@ -140,8 +142,8 @@ class ExhibitionSeeder extends Seeder
                 'address' => 'Oosterdokskade, 1011 DL Amsterdam'
             ],
             'is_active' => true,
-        ]);
-        Exhibition::create([
+        ],
+        [
             'title' => 'MOREPIXX',
             'artist_name' => ['Diverse fotografen'],
             'venue_name' => 'Ramses Shaffy Huis',
@@ -156,8 +158,8 @@ class ExhibitionSeeder extends Seeder
                 'address' => 'Piet Heinkade 231, 1019 BW Amsterdam'
             ],
             'is_active' => true,
-        ]);
-        Exhibition::create([
+        ],
+        [
             'title' => 'groepsexpo',
             'artist_name' => ['Diverse kunstenaars'],
             'venue_name' => 'Galerie kunstRUIMTE',
@@ -172,8 +174,8 @@ class ExhibitionSeeder extends Seeder
                 'address' => 'Jodenbreestraat 25, 1011 NH Amsterdam'
             ],
             'is_active' => true,
-        ]);
-        Exhibition::create([
+        ],
+        [
             'title' => 'Onbekend Stadszwanen',
             'artist_name' => [],
             'venue_name' => 'Zwanenburgwal',
@@ -188,8 +190,8 @@ class ExhibitionSeeder extends Seeder
                 'address' => 'Zwanenburgwal, Amsterdam'
             ],
             'is_active' => true,
-        ]);
-        Exhibition::create([
+        ],
+        [
             'title' => 'MAMABIRD',
             'artist_name' => ['MAMABIRD Studio Rob Visje'],
             'venue_name' => 'Zwanenburgwal',
@@ -204,13 +206,13 @@ class ExhibitionSeeder extends Seeder
                 'address' => 'Zwanenburgwal, Amsterdam'
             ],
             'is_active' => true,
-        ]);
-        Exhibition::create([
+        ],
+        [
             'title' => 'Iztock Klançar',
             'artist_name' => ['Iztock Klançar'],
             'venue_name' => 'Free Willie',
             'description' => '',
-            'tags' => json_encode([]),
+            'tags' => [],
             'special_event' => false,
             'image' => null,
             'image_alt' => null,
@@ -220,8 +222,8 @@ class ExhibitionSeeder extends Seeder
                 'address' => 'Amstel 178, 1017 CZ Amsterdam'
             ],
             'is_active' => true,
-        ]);
-        Exhibition::create([
+        ],
+        [
             'title' => 'Gemma Leys / Bastiënne Kramer',
             'artist_name' => ['Gemma Leys', 'Bastiënne Kramer'],
             'venue_name' => 'Prinsengracht Atelier',
@@ -236,6 +238,23 @@ class ExhibitionSeeder extends Seeder
                 'address' => 'Prinsengracht, Amsterdam'
             ],
             'is_active' => true,
-        ]);
+        ],
+        ];
+
+        foreach ($exhibitions as $data) {
+            $tags = collect($data['tags'] ?? [])
+                ->map(function ($name) {
+                    return Tag::where('name', ucfirst(strtolower($name)))->first()?->id;
+                })
+                ->filter()
+                ->toArray();
+
+            unset($data['tags']); 
+
+            $exhibition = Exhibition::create($data);
+
+            $exhibition->tags()->sync($tags);
+        }
     }
+        
 }

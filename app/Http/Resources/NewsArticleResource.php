@@ -13,7 +13,6 @@ class NewsArticleResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'date' => $this->date,
-            'tags' => $this->tags,
             'description' => $this->description,
             'image' => $this->image,
             'is_active' => $this->is_active,

@@ -14,7 +14,6 @@ class Exhibition extends Model
         'artist_name',
         'venue_name',
         'description',
-        'tags',
         'special_event',
         'image',
         'location',
@@ -24,7 +23,6 @@ class Exhibition extends Model
 
 
     protected $casts = [
-        'tags' => 'array',
         'special_event' => 'boolean',
         'is_active' => 'boolean',
         'location' => 'array',
@@ -34,5 +32,10 @@ class Exhibition extends Model
     public function schedules()
     {
         return $this->hasMany(ExhibitionSchedule::class);
+    }
+
+    public function tags()
+    {
+        return $this->morphToMany(Tag::class, 'taggable');
     }
 }

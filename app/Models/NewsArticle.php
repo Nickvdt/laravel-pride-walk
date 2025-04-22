@@ -12,7 +12,6 @@ class NewsArticle extends Model
     protected $fillable = [
         'title',
         'date',
-        'tags',
         'description',
         'image',
         'image_alt',
@@ -20,7 +19,11 @@ class NewsArticle extends Model
     ];
 
     protected $casts = [
-        'tags' => 'array',
         'date' => 'date',
     ];
+
+    public function tags()
+    {
+        return $this->morphToMany(Tag::class, 'taggable');
+    }
 }

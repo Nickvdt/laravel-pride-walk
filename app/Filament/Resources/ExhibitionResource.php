@@ -19,9 +19,7 @@ use App\Forms\Components\MapPicker;
 use Illuminate\Support\Facades\Log;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\TernaryFilter;
-use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\TimePicker;
+use Filament\Forms\Components\Select;
 
 
 class ExhibitionResource extends Resource
@@ -51,7 +49,7 @@ class ExhibitionResource extends Resource
                             ->schema([
                                 FileUpload::make('image')->image()->columnSpan(1),
                                 TextInput::make('image_alt')->label('Alt Text for image')->columnSpan(1),
-                                TagsInput::make('tags')->label('Labels / Tags')->columnSpan(1),
+                                Select::make('tags')->label('Labels / Tags')->multiple()->relationship('tags', 'name')->searchable()->preload()->columnSpan(1),
                                 Toggle::make('special_event')->label('Special Event')->columnSpan(1),
                                 Toggle::make('is_active')->label('Active')->default(true)->columnSpan(1),
                             ]),

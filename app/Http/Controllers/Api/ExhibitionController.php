@@ -12,17 +12,25 @@ class ExhibitionController extends Controller
     public function index()
     {
         return ExhibitionResource::collection(
-            Exhibition::with(['schedules' => function ($query) {
-                $query->orderBy('date')->orderBy('start_time');
-            }])->where('is_active', true)->get()
+            Exhibition::with([
+                'schedules' => function ($query) {
+                    $query->orderBy('date')->orderBy('start_time');
+                },
+                'tags'
+            ])
+            ->where('is_active', true)
+            ->get()
         );
     }
 
     public function show($id)
     {
-        $exhibition = Exhibition::with(['schedules' => function ($query) {
-            $query->orderBy('date')->orderBy('start_time');
-        }])->findOrFail($id);
+        $exhibition = Exhibition::with([
+            'schedules' => function ($query) {
+                $query->orderBy('date')->orderBy('start_time');
+            },
+            'tags'
+        ])->findOrFail($id);
 
         return new ExhibitionResource($exhibition);
     }

@@ -11,24 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('news_articles', function (Blueprint $table) {
+        Schema::create('tags', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->date('date');
-            $table->text('description')->nullable();
-            $table->string('image')->nullable();
-            $table->string('image_alt')->nullable();
-            $table->boolean('is_active')->default(true);
+            $table->string('name')->unique();
             $table->timestamps();
         });
+        
     }
-
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('news_articles');
+        Schema::dropIfExists('tags');
     }
 };

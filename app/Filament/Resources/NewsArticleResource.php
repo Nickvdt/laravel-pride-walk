@@ -19,6 +19,7 @@ use Filament\Forms\Components\Grid;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Columns\ImageColumn;
+use Filament\Forms\Components\Select;
 
 class NewsArticleResource extends Resource
 {
@@ -45,7 +46,7 @@ class NewsArticleResource extends Resource
                             ->columnSpan(1)
                             ->schema([
                                 DatePicker::make('date')->required(),
-                                TagsInput::make('tags'),
+                                Select::make('tags')->label('Labels / Tags')->multiple()->relationship('tags', 'name')->searchable()->preload(),
                                 Toggle::make('is_active')->label('Active')->default(true),
                             ]),
                     ])
