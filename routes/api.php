@@ -11,4 +11,7 @@ Route::get('/exhibitions/{id}', [ExhibitionController::class, 'show']);
 Route::get('/news', [NewsArticleController::class, 'index']);
 Route::get('/news/{id}', [NewsArticleController::class, 'show']);
 
-Route::get('/tags', [TagController::class, 'filter']);
+Route::group(['prefix' => 'tags'], function () {
+    Route::get('/', [TagController::class, 'index']);
+    Route::get('/filter', [TagController::class, 'filter']);
+});

@@ -4,22 +4,30 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ExhibitionResource;
+use App\Library\Tags\ApplyTags;
 use App\Models\Exhibition;
 use Illuminate\Http\Request;
 
+
 class ExhibitionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $query = Exhibition::with([
+            'schedules' => function ($query) {
+                $query->orderBy('date')->orderBy('start_time');
+            },
+            'tags'
+        ])->where('is_active', true);
+
+        $tags = $request->input('tags');
+        
+        if($tags) {
+            $query = ApplyTags::apply($query, $tags);
+        }
+        
         return ExhibitionResource::collection(
-            Exhibition::with([
-                'schedules' => function ($query) {
-                    $query->orderBy('date')->orderBy('start_time');
-                },
-                'tags'
-            ])
-            ->where('is_active', true)
-            ->get()
+            $query->get()
         );
     }
 

@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 
 class TagController extends Controller
 {
+    public function index() {
+        return response()->json(Tag::all());
+    }
     public function filter(Request $request)
     {
         $tagName = $request->input('tag');
