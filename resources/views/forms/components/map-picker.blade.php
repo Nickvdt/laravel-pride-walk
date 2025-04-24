@@ -111,8 +111,10 @@
 
                 this.map = L.map('map').setView([this.latitude, this.longitude], 12);
 
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '',
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                    attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
+                    subdomains: 'abcd',
+                    maxZoom: 19
                 }).addTo(this.map);
 
                 this.marker = L.marker([this.latitude, this.longitude], {
@@ -246,9 +248,9 @@
                         this.address = 'Fout bij ophalen adres';
                         this.updateLocation();
                     });
-                }
             }
         }
+    }
 </script>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
