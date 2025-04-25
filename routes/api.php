@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/exhibitions', [ExhibitionController::class, 'index']);
 Route::get('/exhibitions/{id}', [ExhibitionController::class, 'show']);
 
+Route::get('/exhibitions-upcoming', [ExhibitionController::class, 'upcoming']);
+
 Route::get('/news', [NewsArticleController::class, 'index']);
 Route::get('/news/{id}', [NewsArticleController::class, 'show']);
 

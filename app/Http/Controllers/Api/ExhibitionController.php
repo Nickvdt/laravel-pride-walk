@@ -7,6 +7,8 @@ use App\Http\Resources\ExhibitionResource;
 use App\Library\Tags\ApplyTags;
 use App\Models\Exhibition;
 use Illuminate\Http\Request;
+use App\Services\ScheduleExpander;
+
 
 
 class ExhibitionController extends Controller
@@ -21,11 +23,11 @@ class ExhibitionController extends Controller
         ])->where('is_active', true);
 
         $tags = $request->input('tags');
-        
-        if($tags) {
+
+        if ($tags) {
             $query = ApplyTags::apply($query, $tags);
         }
-        
+
         return ExhibitionResource::collection(
             $query->get()
         );
@@ -41,5 +43,47 @@ class ExhibitionController extends Controller
         ])->findOrFail($id);
 
         return new ExhibitionResource($exhibition);
+    }
+
+    public function upcoming(Request $request)
+    {
+        $limit = $request->input('limit', 10);
+
+        $exhibitions = Exhibition::with('schedules')
+            ->where('is_active', true)
+            ->get();
+
+        $data = $exhibitions->map(function ($exhibition) use ($limit) {
+            $expandedSchedules = [];
+
+            foreach ($exhibition->schedules as $schedule) {
+                $expandedSchedules = array_merge(
+                    $expandedSchedules,
+                    ScheduleExpander::expand($schedule, $limit)
+                );
+            }
+
+            usort($expandedSchedules, fn($a, $b) => strtotime($a['date'] . ' ' . $a['start_time']) <=> strtotime($b['date'] . ' ' . $b['start_time']));
+            $expandedSchedules = array_slice($expandedSchedules, 0, $limit);
+
+            $expandedSchedules = array_map(function ($item) {
+                $start = strtotime($item['date'] . ' ' . $item['start_time']);
+                $end = strtotime($item['date'] . ' ' . $item['end_time']);
+
+                return [
+                    'date' => $item['date'],
+                    'start_time' => $start,
+                    'end_time' => $end,
+                ];
+            }, $expandedSchedules);
+
+            return [
+                'id' => $exhibition->id,
+                'title' => $exhibition->title,
+                'schedules' => $expandedSchedules,
+            ];
+        });
+
+        return response()->json($data);
     }
 }
