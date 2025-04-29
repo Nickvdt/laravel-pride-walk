@@ -23,9 +23,14 @@ class ExhibitionController extends Controller
         ])->where('is_active', true);
 
         $tags = $request->input('tags');
+        $title = $request->input('title');
 
         if ($tags) {
-            $query = ApplyTags::apply($query, $tags);
+            $query = ApplyTags::ApplyFilters($query, $tags);
+        }
+
+        if ($title) {
+            $query->where('title', 'LIKE', '%' . $title . '%');
         }
 
         return ExhibitionResource::collection(
