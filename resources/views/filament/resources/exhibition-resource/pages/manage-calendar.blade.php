@@ -90,189 +90,244 @@
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 
     <script>
-        let selectedDate = null;
-        let editingEventId = null;
-        let calendar;
+    let selectedDate = null;
+    let editingEventId = null;
+    let calendar;
 
-        document.addEventListener('DOMContentLoaded', function () {
-            const calendarEl = document.getElementById('calendar');
-            const eventData = JSON.parse(document.getElementById('event-data').textContent);
+    document.addEventListener('DOMContentLoaded', function () {
+        const calendarEl = document.getElementById('calendar');
+        const eventData = JSON.parse(document.getElementById('event-data').textContent);
 
-            calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                editable: true,
-                selectable: true,
-                locale: 'en',
-                events: eventData,
+        calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            editable: true,
+            selectable: true,
+            locale: 'en',
+            events: eventData,
 
-                eventContent: function (arg) {
-                    const start = arg.event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    const end = arg.event.end ? arg.event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
-                    return { html: `<b>${start} - ${end}</b>` };
-                },
+            eventContent: function (arg) {
+                const start = arg.event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                const end = arg.event.end ? arg.event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+                return { html: `<b>${start} - ${end}</b>` };
+            },
 
-                select: function (info) {
+            select: function (info) {
+                const eventsInRange = calendar.getEvents().filter(event => {
+                    return event.start >= info.start && event.start < info.end;
+                });
+
+                if (eventsInRange.length > 0) {
+                    if (confirm(`Er zijn ${eventsInRange.length} openingstijden geselecteerd. Wil je deze verwijderen?`)) {
+                        eventsInRange.forEach(event => {
+                            fetch(`/schedules/${event.id}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                }
+                            }).then(() => {
+                                event.remove();
+                            });
+                        });
+                    }
+                } else {
+                    // Als er geen events zijn in de selectie: open normaal de event toevoegen modal
                     selectedDate = info.startStr.split('T')[0];
                     editingEventId = null;
                     document.getElementById('deleteEventBtn').classList.add('hidden');
                     document.getElementById('repeat_type').value = '';
                     toggleRepeatFields();
                     openModal();
-                },
-
-                eventClick: function (info) {
-                    const event = info.event;
-                    editingEventId = event.id;
-                    selectedDate = event.start.toISOString().split('T')[0];
-
-                    document.querySelector('[name="start_time"]').value = event.start.toTimeString().slice(0, 5);
-                    document.querySelector('[name="end_time"]').value = event.end ? event.end.toTimeString().slice(0, 5) : '';
-                    document.getElementById('deleteEventBtn').classList.remove('hidden');
-                    openModal();
-                },
-
-                eventDrop: function (info) {
-                    fetch(`/schedules/${info.event.id}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: JSON.stringify({
-                            start: info.event.start.toISOString(),
-                            end: info.event.end.toISOString()
-                        })
-                    });
-                },
-            });
-
-            calendar.render();
-            document.getElementById('repeat_type').addEventListener('change', toggleRepeatFields);
-        });
-
-        function toggleRepeatFields() {
-            const type = document.getElementById('repeat_type').value;
-            document.getElementById('weekly-days').classList.toggle('hidden', type !== 'weekly');
-
-            const dateFields = document.querySelectorAll('[name="repeat_start"], [name="repeat_end"]');
-            dateFields.forEach(el => {
-                el.closest('div').classList.toggle('hidden', type === '');
-            });
-        }
-
-        function openModal() {
-            document.getElementById('eventModal').classList.remove('hidden');
-        }
-
-        function closeModal() {
-            document.getElementById('eventModal').classList.add('hidden');
-            document.getElementById('eventForm').reset();
-            editingEventId = null;
-        }
-
-        function generateRecurrenceDates(rule, startDateStr) {
-            const match = rule.match(/FREQ=(DAILY|WEEKLY);?(BYDAY=([^;]+))?;?UNTIL=(\d{8})/);
-            if (!match) return [];
-
-            const freq = match[1];
-            const byDayRaw = match[3] || '';
-            const until = match[4];
-
-            const weekdayMap = { 'MO': 1, 'TU': 2, 'WE': 3, 'TH': 4, 'FR': 5, 'SA': 6, 'SU': 0 };
-            const allowedWeekdays = byDayRaw.split(',').map(d => weekdayMap[d]).filter(Boolean);
-
-            const startDate = new Date(startDateStr);
-            const endDate = new Date(until.slice(0, 4), until.slice(4, 6) - 1, until.slice(6, 8));
-            endDate.setDate(endDate.getDate() + 1);
-
-
-            const dates = [];
-            let current = new Date(startDate);
-
-            while (current <= endDate) {
-                if (
-                    (freq === 'DAILY') ||
-                    (freq === 'WEEKLY' && allowedWeekdays.includes(current.getDay()))
-                ) {
-                    dates.push(new Date(current));
                 }
-                current.setDate(current.getDate() + 1);
-            }
+            },
 
-            return dates;
-        }
+            eventClick: function (info) {
+                const event = info.event;
+                editingEventId = event.id;
+                selectedDate = event.start.toISOString().split('T')[0];
 
-        document.getElementById('eventForm').addEventListener('submit', function (e) {
-            e.preventDefault();
+                document.querySelector('[name="start_time"]').value = event.start.toTimeString().slice(0, 5);
+                document.querySelector('[name="end_time"]').value = event.end ? event.end.toTimeString().slice(0, 5) : '';
+                document.getElementById('deleteEventBtn').classList.remove('hidden');
+                openModal();
+            },
 
-            const form = e.target;
-            const startTime = form.start_time.value;
-            const endTime = form.end_time.value;
-            const repeatType = form.repeat_type.value;
-            const startDate = selectedDate || form.repeat_start.value;
-            const endDate = form.repeat_end.value;
-
-            let recurrenceRule = null;
-
-            if (repeatType === 'daily') {
-                recurrenceRule = `FREQ=DAILY;UNTIL=${endDate.replace(/-/g, '')}`;
-            } else if (repeatType === 'weekly') {
-                const days = Array.from(document.querySelectorAll('input[name="repeat_days[]"]:checked')).map(cb => cb.value).join(',');
-                if (days) {
-                    recurrenceRule = `FREQ=WEEKLY;BYDAY=${days};UNTIL=${endDate.replace(/-/g, '')}`;
-                }
-            } else if (repeatType === 'weekdays') {
-                recurrenceRule = `FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;UNTIL=${endDate.replace(/-/g, '')}`;
-            }
-
-            const datesToCreate = recurrenceRule
-                ? generateRecurrenceDates(recurrenceRule, startDate)
-                : [new Date(startDate)];
-
-            datesToCreate.forEach(dateObj => {
-                const dateStr = dateObj.toISOString().split('T')[0];
-                const fullStart = `${dateStr}T${startTime}`;
-                const fullEnd = `${dateStr}T${endTime}`;
-
-                fetch(`/exhibitions/{{ $record->id }}/schedules`, {
-                    method: 'POST',
+            eventDrop: function (info) {
+                fetch(`/schedules/${info.event.id}`, {
+                    method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },
                     body: JSON.stringify({
-                        start: fullStart,
-                        end: fullEnd,
-                        recurrence_rule: recurrenceRule
+                        start: info.event.start.toISOString(),
+                        end: info.event.end.toISOString()
                     })
-                })
-                .then(res => res.json())
-                .then(data => {
-                    calendar.addEvent({
-                        id: data.id,
-                        start: data.date + 'T' + data.start_time,
-                        end: data.date + 'T' + data.end_time,
-                        allDay: false
-                    });
                 });
-            });
+            },
+        });
 
+        calendar.render();
+        document.getElementById('repeat_type').addEventListener('change', toggleRepeatFields);
+    });
+
+    function toggleRepeatFields() {
+        const type = document.getElementById('repeat_type').value;
+        document.getElementById('weekly-days').classList.toggle('hidden', type !== 'weekly');
+
+        const dateFields = document.querySelectorAll('[name="repeat_start"], [name="repeat_end"]');
+        dateFields.forEach(el => {
+            el.closest('div').classList.toggle('hidden', type === '');
+        });
+    }
+
+    function openModal() {
+    document.getElementById('eventModal').classList.remove('hidden');
+
+    if (selectedDate) {
+        document.querySelector('[name="repeat_start"]').value = selectedDate;
+        document.querySelector('[name="repeat_end"]').value = selectedDate;
+    }
+}
+
+
+    function closeModal() {
+        document.getElementById('eventModal').classList.add('hidden');
+        document.getElementById('eventForm').reset();
+        editingEventId = null;
+    }
+
+    function generateRecurrenceDates(rule, startDateStr) {
+        const match = rule.match(/FREQ=(DAILY|WEEKLY);?(BYDAY=([^;]+))?;?UNTIL=(\d{8})/);
+        if (!match) return [];
+
+        const freq = match[1];
+        const byDayRaw = match[3] || '';
+        const until = match[4];
+
+        const weekdayMap = { 'MO': 1, 'TU': 2, 'WE': 3, 'TH': 4, 'FR': 5, 'SA': 6, 'SU': 0 };
+        const allowedWeekdays = byDayRaw.split(',').map(d => weekdayMap[d]).filter(Boolean);
+
+        const startDate = new Date(startDateStr);
+        const endDate = new Date(until.slice(0, 4), until.slice(4, 6) - 1, until.slice(6, 8));
+        endDate.setDate(endDate.getDate() + 1);
+
+        const dates = [];
+        let current = new Date(startDate);
+
+        while (current <= endDate) {
+            if (
+                (freq === 'DAILY') ||
+                (freq === 'WEEKLY' && allowedWeekdays.includes(current.getDay()))
+            ) {
+                dates.push(new Date(current));
+            }
+            current.setDate(current.getDate() + 1);
+        }
+
+        return dates;
+    }
+
+    document.getElementById('eventForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const startTime = form.start_time.value;
+    const endTime = form.end_time.value;
+    const repeatType = form.repeat_type.value;
+    const startDate = selectedDate || form.repeat_start.value;
+    const endDate = form.repeat_end.value;
+
+    let recurrenceRule = null;
+
+    if (repeatType === 'daily') {
+        recurrenceRule = `FREQ=DAILY;UNTIL=${endDate.replace(/-/g, '')}`;
+    } else if (repeatType === 'weekly') {
+        const days = Array.from(document.querySelectorAll('input[name="repeat_days[]"]:checked')).map(cb => cb.value).join(',');
+        if (days) {
+            recurrenceRule = `FREQ=WEEKLY;BYDAY=${days};UNTIL=${endDate.replace(/-/g, '')}`;
+        }
+    } else if (repeatType === 'weekdays') {
+        recurrenceRule = `FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;UNTIL=${endDate.replace(/-/g, '')}`;
+    }
+
+    const dateStr = startDate;
+    const fullStart = `${dateStr}T${startTime}`;
+    const fullEnd = `${dateStr}T${endTime}`;
+
+    if (editingEventId) {
+        // --- UPDATE BESTAAND EVENT ---
+        fetch(`/schedules/${editingEventId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({
+                start: fullStart,
+                end: fullEnd
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            const event = calendar.getEventById(editingEventId);
+            event.setStart(fullStart);
+            event.setEnd(fullEnd);
             closeModal();
         });
 
-        document.getElementById('deleteEventBtn').addEventListener('click', function () {
-            if (editingEventId && confirm('Are you sure you want to delete this event?')) {
-                fetch(`/schedules/${editingEventId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    }
-                }).then(() => {
-                    const event = calendar.getEventById(editingEventId);
-                    event.remove();
-                    closeModal();
+    } else {
+        // --- NIEUW EVENT AANMAKEN ---
+        const datesToCreate = recurrenceRule
+            ? generateRecurrenceDates(recurrenceRule, startDate)
+            : [new Date(startDate)];
+
+        datesToCreate.forEach(dateObj => {
+            const dateStr = dateObj.toISOString().split('T')[0];
+            const fullStart = `${dateStr}T${startTime}`;
+            const fullEnd = `${dateStr}T${endTime}`;
+
+            fetch(`/exhibitions/{{ $record->id }}/schedules`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    start: fullStart,
+                    end: fullEnd,
+                    recurrence_rule: recurrenceRule
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                calendar.addEvent({
+                    id: data.id,
+                    start: data.date + 'T' + data.start_time,
+                    end: data.date + 'T' + data.end_time,
+                    allDay: false
                 });
-            }
+            });
         });
-    </script>
+
+        closeModal();
+    }
+});
+
+
+    document.getElementById('deleteEventBtn').addEventListener('click', function () {
+        if (editingEventId && confirm('Are you sure you want to delete this event?')) {
+            fetch(`/schedules/${editingEventId}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            }).then(() => {
+                const event = calendar.getEventById(editingEventId);
+                event.remove();
+                closeModal();
+            });
+        }
+    });
+</script>
+
 </x-filament::page>
