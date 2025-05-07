@@ -15,6 +15,12 @@ class NewsArticleResource extends JsonResource
             'date' => $this->date,
             'description' => $this->description,
             'image' => $this->image,
+            'tags' => $this->tags->map(function ($tag) {
+                return [
+                    'id' => $tag->id,
+                    'name' => $tag->name,
+                ];
+            }),
             'is_active' => $this->is_active,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
