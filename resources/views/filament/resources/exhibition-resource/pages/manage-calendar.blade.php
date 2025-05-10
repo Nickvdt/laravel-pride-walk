@@ -1,5 +1,5 @@
 <x-filament::page>
-    <div id="calendar" class="h-[700px] rounded-lg shadow"></div>
+    <div id="calendar" class="h-[700px]"></div>
 
     {{-- JSON met bestaande events uit de database --}}
     <script id="event-data" type="application/json">
@@ -91,10 +91,10 @@
                 </div>
 
                 <div class="flex justify-between items-center gap-2 mt-4">
-                    <button type="button" id="deleteEventBtn" class="px-4 py-2 bg-red-600 text-white rounded hidden">Delete</button>
+                    <button type="button" id="deleteEventBtn" class="px-4 py-2 bg-gray-200 text-black rounded dark:bg-gray-800 dark:text-white hidden">Delete</button>
                     <div class="flex gap-2 ml-auto">
-                        <button type="button" onclick="closeModal()" class="px-4 py-2 bg-gray-200 text-black rounded dark:bg-gray-700 dark:text-white">Cancel</button>
-                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Save</button>
+                        <button type="button" onclick="closeModal()" class="px-4 py-2 bg-gray-200 text-black rounded dark:bg-gray-800 dark:text-white">Cancel</button>
+                        <button type="submit" class="px-4 py-2 bg-gray-200 text-black rounded dark:bg-gray-700 dark:text-white">Save</button>
                     </div>
                 </div>
             </form>
