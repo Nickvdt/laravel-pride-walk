@@ -111,16 +111,28 @@
 
                 this.map = L.map('map').setView([this.latitude, this.longitude], 12);
 
-                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-                    attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
-                    subdomains: 'abcd',
-                    maxZoom: 19
+                
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; OpenStreetMap contributors'
                 }).addTo(this.map);
 
+                
+                const markerIcon = L.icon({
+                    iconUrl: '{{ asset("images/leaflet/marker-icon.png") }}',
+                    shadowUrl: '{{ asset("images/leaflet/marker-shadow.png") }}',
+                    iconSize: [25, 41], 
+                    iconAnchor: [12, 41],
+                    shadowSize: [41, 41],
+                    shadowAnchor: [12, 41],
+                });
+
+                
                 this.marker = L.marker([this.latitude, this.longitude], {
                     draggable: true,
+                    icon: markerIcon
                 }).addTo(this.map);
 
+                
                 this.marker.on('dragend', (event) => {
                     let position = event.target.getLatLng();
                     this.latitude = position.lat.toFixed(6);
@@ -130,6 +142,7 @@
                     this.updateLocation();
                 });
 
+                
                 this.map.on('click', (event) => {
                     let position = event.latlng;
                     this.latitude = position.lat.toFixed(6);
@@ -140,9 +153,8 @@
                     this.updateLocation();
                 });
 
-                this.coordControl = L.control({
-                    position: 'bottomright'
-                });
+                
+                this.coordControl = L.control({ position: 'bottomright' });
 
                 this.coordControl.onAdd = () => {
                     let div = L.DomUtil.create('div', 'leaflet-control-latlng');
@@ -156,7 +168,6 @@
                 };
 
                 this.coordControl.addTo(this.map);
-
                 this.updateCoords();
             },
 
@@ -253,5 +264,5 @@
     }
 </script>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
-<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+<link rel="stylesheet" href="{{ asset('css/leaflet/leaflet.css') }}" />
+<script src="{{ asset('js/leaflet/leaflet.js') }}"></script>

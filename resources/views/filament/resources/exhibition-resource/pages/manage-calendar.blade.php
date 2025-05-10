@@ -102,7 +102,7 @@
     </div>
 
     {{-- FullCalendar + recurrence helper --}}
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+    <script src="{{ asset('js/fullcalendar/index.global.min.js') }}"></script>
 
     <script>
         let selectedDate = null;
@@ -429,16 +429,4 @@
             }
         });
     </script>
-<style>
-    .special-event-label {
-        display: inline-block;
-        background-color: #ff6b6b;
-        color: white;
-        font-size: 0.75rem;
-        padding: 0.2em 0.4em;
-        margin-left: 0.5em;
-        border-radius: 4px;
-        font-weight: bold;
-    }
-</style>
 </x-filament::page>
