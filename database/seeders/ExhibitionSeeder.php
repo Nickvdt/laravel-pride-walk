@@ -17,7 +17,6 @@ class ExhibitionSeeder extends Seeder
             'venue_name' => 'Internationaal Theater Amsterdam',
             'description' => 'Fotografie schilderijen keramiek video sieraden collage',
             'tags' => ['Fotografie', 'schilderijen', 'keramiek', 'video', 'sieraden', 'collage'],
-            'special_event' => false,
             'image' => null,
             'image_alt' => null,
             'location' => [
@@ -34,7 +33,6 @@ class ExhibitionSeeder extends Seeder
             'venue_name' => 'Oude Lutherse Kerk',
             'description' => 'Fotografie, keramiek video',
             'tags' => ['Fotografie', 'keramiek', 'video'],
-            'special_event' => false,
             'image' => null,
             'image_alt' => null,
             'location' => [
@@ -50,7 +48,6 @@ class ExhibitionSeeder extends Seeder
             'venue_name' => 'Galerie MAI',
             'description' => 'schilderijen',
             'tags' => ['schilderijen'],
-            'special_event' => false,
             'image' => null,
             'image_alt' => null,
             'location' => [
@@ -67,7 +64,6 @@ class ExhibitionSeeder extends Seeder
             'venue_name' => 'Hotel Mercier',
             'description' => 'Fotografie',
             'tags' => ['Fotografie'],
-            'special_event' => false,
             'image' => null,
             'image_alt' => null,
             'location' => [
@@ -83,7 +79,6 @@ class ExhibitionSeeder extends Seeder
             'venue_name' => 'Mr. B',
             'description' => 'fotografie',
             'tags' => ['fotografie'],
-            'special_event' => false,
             'image' => null,
             'image_alt' => null,
             'location' => [
@@ -100,7 +95,6 @@ class ExhibitionSeeder extends Seeder
             'venue_name' => '?',
             'description' => 'Sieraden',
             'tags' => ['Sieraden'],
-            'special_event' => false,
             'image' => null,
             'image_alt' => null,
             'location' => [
@@ -116,7 +110,6 @@ class ExhibitionSeeder extends Seeder
             'venue_name' => 'RoB',
             'description' => 'Collages',
             'tags' => ['Collages'],
-            'special_event' => false,
             'image' => null,
             'image_alt' => null,
             'location' => [
@@ -133,7 +126,6 @@ class ExhibitionSeeder extends Seeder
             'venue_name' => 'IHLIA 143 (3e verdieping)',
             'description' => 'Documentatie',
             'tags' => ['Documentatie'],
-            'special_event' => false,
             'image' => null,
             'image_alt' => null,
             'location' => [
@@ -149,7 +141,6 @@ class ExhibitionSeeder extends Seeder
             'venue_name' => 'Ramses Shaffy Huis',
             'description' => 'Fotografie',
             'tags' => ['Fotografie'],
-            'special_event' => false,
             'image' => null,
             'image_alt' => null,
             'location' => [
@@ -165,7 +156,6 @@ class ExhibitionSeeder extends Seeder
             'venue_name' => 'Galerie kunstRUIMTE',
             'description' => 'Schilderij keramiek',
             'tags' => ['schilderij', 'keramiek'],
-            'special_event' => false,
             'image' => null,
             'image_alt' => null,
             'location' => [
@@ -181,7 +171,6 @@ class ExhibitionSeeder extends Seeder
             'venue_name' => 'Zwanenburgwal',
             'description' => '',
             'tags' => [],
-            'special_event' => false,
             'image' => null,
             'image_alt' => null,
             'location' => [
@@ -197,7 +186,6 @@ class ExhibitionSeeder extends Seeder
             'venue_name' => 'Zwanenburgwal',
             'description' => 'Lithografie en acryl',
             'tags' => ['Lithografie', 'acryl'],
-            'special_event' => false,
             'image' => null,
             'image_alt' => null,
             'location' => [
@@ -213,7 +201,6 @@ class ExhibitionSeeder extends Seeder
             'venue_name' => 'Free Willie',
             'description' => '',
             'tags' => [],
-            'special_event' => false,
             'image' => null,
             'image_alt' => null,
             'location' => [
@@ -229,7 +216,6 @@ class ExhibitionSeeder extends Seeder
             'venue_name' => 'Prinsengracht Atelier',
             'description' => 'schilderijen / keramiek',
             'tags' => ['schilderijen', 'keramiek'],
-            'special_event' => false,
             'image' => null,
             'image_alt' => null,
             'location' => [

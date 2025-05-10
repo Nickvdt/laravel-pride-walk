@@ -14,6 +14,8 @@ return new class extends Migration {
             $table->time('start_time');
             $table->time('end_time');
             $table->string('recurrence_rule')->nullable();
+            $table->boolean('is_special_event')->default(false);
+            $table->string('special_event_description')->nullable();
             $table->timestamps();
         });
     }
