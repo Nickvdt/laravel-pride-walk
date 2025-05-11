@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\ExhibitionScheduleResource;
 use App\Services\ScheduleExpander;
+use Illuminate\Support\Facades\Log;
 
 
 class ExhibitionResource extends JsonResource
@@ -51,17 +52,31 @@ class ExhibitionResource extends JsonResource
         $expanded = [];
 
         foreach ($schedules as $schedule) {
-            $items = ScheduleExpander::expand($schedule, 50);
-            foreach ($items as $item) {
-                $start = strtotime($item['date'] . ' ' . $item['start_time']);
-                $end = strtotime($item['date'] . ' ' . $item['end_time']);
-                $expanded[] = [
-                    'date' => $item['date'],
-                    'start_time' => $start,
-                    'end_time' => $end,
-                    'is_special_event' => $schedule->is_special_event,
-                    'special_event_description' => $schedule->special_event_description,
-                ];
+            try {
+                $items = ScheduleExpander::expand($schedule, 50);
+                foreach ($items as $item) {
+                    // Verwijder de tijd uit de datum als die erin zit
+                    $dateOnly = explode(' ', $item['date'])[0];
+
+                    // Gebruik UNIX-timestamp voor de tijden
+                    $start = strtotime($dateOnly . ' ' . $item['start_time']);
+                    $end = strtotime($dateOnly . ' ' . $item['end_time']);
+
+                    $expanded[] = [
+                        'date' => $item['date'],
+                        'start_time' => $start,    // Gebruik UNIX-timestamp
+                        'end_time' => $end,        // Gebruik UNIX-timestamp
+                        'is_special_event' => $schedule->is_special_event,
+                        'special_event_description' => $schedule->special_event_description,
+                    ];
+                }
+            } catch (\Exception $e) {
+                // Log de fout
+                Log::error("Fout tijdens expanderen van schedules", [
+                    'schedule_id' => $schedule->id,
+                    'title' => $schedule->exhibition->title ?? 'Onbekend',
+                    'error' => $e->getMessage(),
+                ]);
             }
         }
 
