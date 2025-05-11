@@ -27,7 +27,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
-            ->brandName('Pride Art Route')
+            ->brandName('Pride Art Walk')
             ->colors([
                 'primary' => Color::Amber,
             ])

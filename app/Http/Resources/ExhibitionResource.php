@@ -59,6 +59,8 @@ class ExhibitionResource extends JsonResource
                     'date' => $item['date'],
                     'start_time' => $start,
                     'end_time' => $end,
+                    'is_special_event' => $schedule->is_special_event,
+                    'special_event_description' => $schedule->special_event_description,
                 ];
             }
         }

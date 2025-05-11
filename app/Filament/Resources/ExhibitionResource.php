@@ -50,7 +50,6 @@ class ExhibitionResource extends Resource
                                 FileUpload::make('image')->image()->columnSpan(1),
                                 TextInput::make('image_alt')->label('Alt Text for image')->columnSpan(1),
                                 Select::make('tags')->label('Labels / Tags')->multiple()->relationship('tags', 'name')->searchable()->preload()->columnSpan(1),
-                                Toggle::make('special_event')->label('Special Event')->columnSpan(1),
                                 Toggle::make('is_active')->label('Active')->default(true)->columnSpan(1),
                             ]),
                     ])
@@ -64,18 +63,12 @@ class ExhibitionResource extends Resource
                 TextColumn::make('title')->sortable()->searchable(),
                 TextColumn::make('artist_name')->sortable(),
                 TextColumn::make('venue_name')->sortable(),
-                ToggleColumn::make('special_event')->label('Special Event'),
                 ToggleColumn::make('is_active')->label('Active'),
                 TextColumn::make('created_at')->dateTime(),
             ])
             ->filters([
                 TernaryFilter::make('is_active')
                     ->label('Toon alleen actieve exposities')
-                    ->nullable()
-                    ->boolean(),
-
-                TernaryFilter::make('special_event')
-                    ->label('Toon alleen special events')
                     ->nullable()
                     ->boolean(),
             ])

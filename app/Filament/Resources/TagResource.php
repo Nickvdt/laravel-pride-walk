@@ -23,7 +23,7 @@ class TagResource extends Resource
             TextInput::make('name')
                 ->required()
                 ->unique(ignoreRecord: true)
-                ->label('Tag name'),
+                ->label('Tag Name'),
         ]);
     }
 
@@ -31,15 +31,22 @@ class TagResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->sortable()->searchable(),
-                TextColumn::make('created_at')->dateTime()->label('Aangemaakt op'),
+                TextColumn::make('name')->sortable()->searchable()->label('Name'),
+                TextColumn::make('created_at')->dateTime()->label('Created At'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->label('Edit')
+                    ->modalHeading('Edit Tag')
+                    ->modalButton('Save'),
+
+                Tables\Actions\DeleteAction::make()
+                    ->label('Delete')
+                    ->modalHeading('Delete Tag')
+                    ->modalButton('Delete'),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\DeleteBulkAction::make()->label('Delete Selected'),
             ]);
     }
 
@@ -47,8 +54,6 @@ class TagResource extends Resource
     {
         return [
             'index' => Pages\ListTags::route('/'),
-            'create' => Pages\CreateTag::route('/create'),
-            'edit' => Pages\EditTag::route('/{record}/edit'),
         ];
     }
 }

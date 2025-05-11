@@ -14,6 +14,8 @@ class ExhibitionScheduleResource extends JsonResource
             'start_time' => $this->start_time,
             'end_time' => $this->end_time,
             'recurrence_rule' => $this->recurrence_rule,
+            'is_special_event' => $this->is_special_event,
+            'special_event_description' => $this->special_event_description,
         ];
     }
 }

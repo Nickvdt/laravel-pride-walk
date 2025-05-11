@@ -3,7 +3,7 @@
     <div id="map" class="w-full h-96 rounded-lg border border-gray-300 shadow-sm"></div>
 
     <div class="flex flex-col  pt-4">
-        <label for="address" class="text-sm font-medium text-white">Adres</label>
+        <label for="address" class="block text-sm font-medium text-black dark:text-white">Adres</label>
         <div class="flex items-center ">
             <input
                 type="text"
@@ -11,32 +11,43 @@
                 x-model="address"
                 @keydown.enter.prevent="geocodeAddress()"
                 @input="updateLocation()"
-                class="block w-full rounded-lg border-0 bg-transparent py-2 px-3 text-sm text-white ring-1 ring-inset ring-white/10 placeholder-white/40 focus:ring-2 focus:ring-inset focus:ring-white/20 appearance-none"
+                class="block w-full rounded-lg border-0 bg-white text-black dark:bg-gray-800 dark:text-white py-2 px-3 text-sm ring-1 ring-inset ring-gray-300 dark:ring-white/10 placeholder-gray-500 dark:placeholder-white/40 focus:ring-2 focus:ring-inset focus:ring-blue-500 dark:focus:ring-blue-300"
                 placeholder="Typ een adres..." />
 
             <button
                 type="button"
                 @click="geocodeAddress()"
-                class="text-white hover:text-white/70 focus:outline-none cursor-pointer">
+                class="text-black dark:text-white hover:text-gray-700 dark:hover:text-white/70 focus:outline-none cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
                     viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1012 19.5a7.5 7.5 0 004.35-1.85z" />
                 </svg>
             </button>
+
         </div>
     </div>
     <div class="mt-2 flex space-x-4 pt-4">
-        <div class="flex-1 ">
-            <label for="latitude" class="block text-sm font-medium text-white">Latitude</label>
-            <input type="number" step="any" id="latitude" x-model="latitude" @input="updateMarker()"
-                class="block w-full rounded-lg border-0 bg-transparent py-2 px-3 text-sm text-white ring-1 ring-inset ring-white/10 placeholder-white/40 focus:ring-2 focus:ring-inset focus:ring-white/20"
+        <div class="flex-1">
+            <label for="latitude" class="block text-sm font-medium text-black dark:text-white">Latitude</label>
+            <input
+                type="number"
+                step="any"
+                id="latitude"
+                x-model="latitude"
+                @input="updateMarker()"
+                class="block w-full rounded-lg border-0 bg-white text-black dark:bg-gray-800 dark:text-white py-2 px-3 text-sm ring-1 ring-inset ring-gray-300 dark:ring-white/10 placeholder-gray-500 dark:placeholder-white/40 focus:ring-2 focus:ring-inset focus:ring-blue-500 dark:focus:ring-blue-300"
                 placeholder="Latitude">
         </div>
         <div class="flex-1">
-            <label for="longitude" class="block text-sm font-medium text-white">Longitude</label>
-            <input type="number" step="any" id="longitude" x-model="longitude" @input="updateMarker()"
-                class="block w-full rounded-lg border-0 bg-transparent py-2 px-3 text-sm text-white ring-1 ring-inset ring-white/10 placeholder-white/40 focus:ring-2 focus:ring-inset focus:ring-white/20"
+            <label for="longitude" class="block text-sm font-medium text-black dark:text-white">Longitude</label>
+            <input
+                type="number"
+                step="any"
+                id="longitude"
+                x-model="longitude"
+                @input="updateMarker()"
+                class="block w-full rounded-lg border-0 bg-white text-black dark:bg-gray-800 dark:text-white py-2 px-3 text-sm ring-1 ring-inset ring-gray-300 dark:ring-white/10 placeholder-gray-500 dark:placeholder-white/40 focus:ring-2 focus:ring-inset focus:ring-blue-500 dark:focus:ring-blue-300"
                 placeholder="Longitude">
         </div>
     </div>
@@ -111,15 +122,27 @@
 
                 this.map = L.map('map').setView([this.latitude, this.longitude], 12);
 
-                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-                    attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
-                    subdomains: 'abcd',
-                    maxZoom: 19
+
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; OpenStreetMap contributors'
                 }).addTo(this.map);
+
+
+                const markerIcon = L.icon({
+                    iconUrl: '{{ asset("images/leaflet/marker-icon.png") }}',
+                    shadowUrl: '{{ asset("images/leaflet/marker-shadow.png") }}',
+                    iconSize: [25, 41],
+                    iconAnchor: [12, 41],
+                    shadowSize: [41, 41],
+                    shadowAnchor: [12, 41],
+                });
+
 
                 this.marker = L.marker([this.latitude, this.longitude], {
                     draggable: true,
+                    icon: markerIcon
                 }).addTo(this.map);
+
 
                 this.marker.on('dragend', (event) => {
                     let position = event.target.getLatLng();
@@ -130,6 +153,7 @@
                     this.updateLocation();
                 });
 
+
                 this.map.on('click', (event) => {
                     let position = event.latlng;
                     this.latitude = position.lat.toFixed(6);
@@ -139,6 +163,7 @@
                     this.updateCoords();
                     this.updateLocation();
                 });
+
 
                 this.coordControl = L.control({
                     position: 'bottomright'
@@ -156,7 +181,6 @@
                 };
 
                 this.coordControl.addTo(this.map);
-
                 this.updateCoords();
             },
 
@@ -253,5 +277,5 @@
     }
 </script>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
-<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+<link rel="stylesheet" href="{{ asset('css/leaflet/leaflet.css') }}" />
+<script src="{{ asset('js/leaflet/leaflet.js') }}"></script>

@@ -14,7 +14,6 @@ return new class extends Migration {
             $table->string('venue_name');
             $table->json('location')->nullable();
             $table->text('description')->nullable();
-            $table->boolean('special_event')->default(false);
             $table->boolean('is_active')->default(true);
             $table->string('image')->nullable();
             $table->string('image_alt')->nullable();

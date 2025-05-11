@@ -10,78 +10,56 @@ class ExhibitionScheduleSeeder extends Seeder
 {
     public function run()
     {
-        $peekaboo = Exhibition::where('title', 'PEEKABOO')->first();
-        $queerChurch = Exhibition::where('title', 'Queer in the Church')->first();
-        $tonOfHolland = Exhibition::whereJsonContains('artist_name', 'Ton of Holland')->first();
-        $hotelMercier = Exhibition::where(function ($query) {
-            $query->whereJsonContains('artist_name', 'Maxime de Waal')
-                ->orWhereJsonContains('artist_name', 'Tim Weerdenburg');
-        })->first();
-        $eepSeeber = Exhibition::where('title', 'Eep Seeber @ Mister B')->first();
-        $paulDerrez = Exhibition::whereJsonContains('artist_name', 'Paul Derrez')->first();
-        $carlosMarlow = Exhibition::where('title', 'Carlos Marlo @ Rob')->first();
-        $rozeReuzen = Exhibition::where('title', 'Roze Reuzen')->first();
-        $morepixx = Exhibition::where('title', 'MOREPIXX')->first();
-        $groupExhibition = Exhibition::where('title', 'groepsexpo')->first();
-        $stadszwanen = Exhibition::where('title', 'Onbekend Stadszwanen')->first();
-        $mamabird = Exhibition::where('title', 'MAMABIRD')->first();
-        $iztock = Exhibition::whereJsonContains('artist_name', 'Iztock Klançar')->first();
-        $gemma = Exhibition::where(function ($query) {
-            $query->whereJsonContains('artist_name', 'Gemma Leys')
-                ->orWhereJsonContains('artist_name', 'Bastiënne Kramer');
-        })->first();
+        $defaultStartDate = Carbon::create(2025, 7, 26);
+        $defaultEndDate = Carbon::create(2025, 8, 3);
 
-        $startDate = Carbon::create(2025, 7, 26);
-        $endDate = Carbon::create(2025, 8, 3);
+        $exhibitions = [
+            ['title' => 'PEEKABOO', 'start' => '12:00', 'end' => '18:00'], // 1
+            ['title' => 'WALLPAPER', 'start' => '13:00', 'end' => '19:00', 'daily' => true], // 3
+            ['title' => 'Dans volk', 'start' => '09:00', 'end' => '21:00', 'daily' => true], // 4
+            ['title' => 'MY FETISH EYE', 'start' => '11:00', 'end' => '19:00', 'daily' => true], // 5
+            ['title' => 'Roze Reuzen', 'weekdays' => [ // 8
+                'zondag' => ['10:00', '20:00'],
+                'maandag' => ['08:00', '22:00'],
+                'dinsdag' => ['08:00', '22:00'],
+                'woensdag' => ['08:00', '22:00'],
+                'donderdag' => ['08:00', '22:00'],
+                'vrijdag' => ['08:00', '22:00'],
+                'zaterdag' => ['10:00', '20:00']
+            ]],
+            ['title' => 'MOREPIXX', 'start' => '17:00', 'end' => '19:00', 'start_date' => '2025-07-19', 'end_date' => '2025-08-03', 'daily' => true], // 9
+            ['title' => 'KUNSTRUIM', 'start' => '12:00', 'end' => '18:00', 'start_date' => '2025-07-09', 'end_date' => '2025-08-03',], // 10
+            ['title' => '*DIED*', 'start' => '12:00', 'end' => '18:00', 'start_date' => '2025-07-31', 'end_date' => '2025-08-03'],// 11
+            ['title' => 'MAMABIRD', 'start' => '12:00', 'end' => '18:00'], // 12
+            ['title' => 'MARTIN AT FREE WILLY', 'start' => '20:00', 'end' => '23:59', 'daily' => true], // 13
+            ['title' => 'Gemma Leys en Bastiënne Kramer', 'start' => '12:00', 'end' => '18:00', 'daily' => true], // 14
+            ['title' => 'Prins de Vos', 'start' => '11:00', 'end' => '23:00', 'start_date' => '2025-07-18', 'end_date' => '2025-08-24', 'daily' => true], // 17
+            ['title' => 'TIM&RISK&DEVON', 'start' => '09:00', 'end' => '21:00', 'daily' => true], // 18
+            ['title' => 'MEN BY NIELS', 'start' => '09:00', 'end' => '21:00', 'daily' => true], // 19
+            ['title' => 'Pedro Matias', 'start' => '09:00', 'end' => '21:00', 'daily' => true], // 22
 
-        foreach ([$peekaboo, $queerChurch, $tonOfHolland, $hotelMercier, $eepSeeber, $paulDerrez, $carlosMarlow, $rozeReuzen, $stadszwanen, $mamabird, $gemma] as $exhibition) {
-            for ($date = $startDate->copy(); $date->lte($endDate); $date->addDay()) {
-                $exhibition?->schedules()->create([
-                    'date' => $date->toDateString(),
-                    'start_time' => '12:00',
-                    'end_time' => '18:00',
-                    'recurrence_rule' => null,
-                ]);
-            }
-        }
-        $morepixxDates = [
-            '2025-07-19' => ['16:00', '20:00'],
-            '2025-07-20' => ['16:00', '19:00'],
-            '2025-07-21' => ['16:00', '19:00'],
-            '2025-07-22' => ['17:00', '19:00'],
-            '2025-07-23' => ['17:00', '19:00'],
-            '2025-07-24' => ['19:00', '19:00'],
-            '2025-07-25' => ['19:00', '19:00'],
-            '2025-07-26' => ['19:00', '19:00'],
-            '2025-07-27' => ['13:00', '18:00'],
-            '2025-07-28' => ['13:00', '18:00'],
-            '2025-07-29' => ['17:00', '19:00'],
-            '2025-07-30' => ['13:00', '18:00'],
-            '2025-07-31' => ['13:00', '18:00'],
-            '2025-08-01' => ['13:00', '18:00'],
-            // '2025-08-02' => gesloten
-            '2025-08-03' => ['13:00', '18:00'],
         ];
 
-        foreach ($morepixxDates as $date => [$start, $end]) {
-            $morepixx?->schedules()->create([
-                'date' => $date,
-                'start_time' => $start,
-                'end_time' => $end,
-                'recurrence_rule' => null,
-            ]);
-        }
-        if ($groupExhibition) {
-            $startGroup = Carbon::create(2025, 7, 9);
-            $endGroup = Carbon::create(2025, 8, 3);
+        foreach ($exhibitions as $exhibition) {
+            $model = Exhibition::where('title', $exhibition['title'])->first();
+            if ($model) {
+                $startDate = isset($exhibition['start_date']) ? Carbon::parse($exhibition['start_date']) : $defaultStartDate;
+                $endDate = isset($exhibition['end_date']) ? Carbon::parse($exhibition['end_date']) : $defaultEndDate;
 
-            for ($date = $startGroup; $date->lte($endGroup); $date->addDay()) {
-                $groupExhibition->schedules()->create([
-                    'date' => $date->toDateString(),
-                    'start_time' => '12:00',
-                    'end_time' => '18:00',
-                    'recurrence_rule' => null,
-                ]);
+                for ($date = $startDate->copy(); $date->lte($endDate); $date->addDay()) {
+                    $dayOfWeek = strtolower($date->format('l'));
+                    $start = $exhibition['start'] ?? '00:00';
+                    $end = $exhibition['end'] ?? '00:00';
+                    if (isset($exhibition['weekdays']) && isset($exhibition['weekdays'][$dayOfWeek])) {
+                        list($start, $end) = $exhibition['weekdays'][$dayOfWeek];
+                    }
+                    $model->schedules()->create([
+                        'date' => $date->toDateString(),
+                        'start_time' => $start,
+                        'end_time' => $end,
+                        'recurrence_rule' => $exhibition['daily'] ?? null,
+                    ]);
+                }
             }
         }
     }

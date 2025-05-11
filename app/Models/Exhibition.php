@@ -14,7 +14,6 @@ class Exhibition extends Model
         'artist_name',
         'venue_name',
         'description',
-        'special_event',
         'image',
         'location',
         'is_active',
@@ -23,7 +22,6 @@ class Exhibition extends Model
 
 
     protected $casts = [
-        'special_event' => 'boolean',
         'is_active' => 'boolean',
         'location' => 'array',
         'artist_name' => 'array',
