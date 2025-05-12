@@ -16,7 +16,7 @@ class ExhibitionSeeder extends Seeder
                 'artist_name' => ['Diverse kunstenaars'],
                 'venue_name' => 'Internationaal Theater Amsterdam',
                 'description' => 'Fotografie schilderijen keramiek video sieraden collage',
-                'tags' => ['Fotografie', 'schilderijen', 'keramiek', 'video', 'sieraden', 'collage'],
+                'tags' => ['fotografie', 'schilderijen', 'keramiek', 'video', 'sieraden', 'collages'],
                 'image' => null,
                 'image_alt' => null,
                 'location' => [
@@ -32,7 +32,7 @@ class ExhibitionSeeder extends Seeder
                 'artist_name' => ['Arjan Spannenburg', 'Frans Franciscus', 'MVS'],
                 'venue_name' => 'Oude Lutherse Kerk',
                 'description' => 'Fotografie, keramiek video',
-                'tags' => ['Fotografie', 'keramiek', 'video'],
+                'tags' => ['fotografie', 'keramiek', 'video'],
                 'image' => null,
                 'image_alt' => null,
                 'location' => [
@@ -63,7 +63,7 @@ class ExhibitionSeeder extends Seeder
                 'artist_name' => ['Maxime de Waal'],
                 'venue_name' => 'Hotel Mercier',
                 'description' => 'Fotografie',
-                'tags' => ['Fotografie'],
+                'tags' => ['fotografie'],
                 'image' => null,
                 'image_alt' => null,
                 'location' => [
@@ -78,7 +78,7 @@ class ExhibitionSeeder extends Seeder
                 'artist_name' => ['Gabriel Batenburg'],
                 'venue_name' => 'Mr. B',
                 'description' => 'Fotografie',
-                'tags' => ['Fotografie'],
+                'tags' => ['fotografie'],
                 'image' => null,
                 'image_alt' => null,
                 'location' => [
@@ -125,7 +125,7 @@ class ExhibitionSeeder extends Seeder
                 'artist_name' => ['Uit archief IHLIA'],
                 'venue_name' => 'IHLIA 143 (3e verdieping)',
                 'description' => 'Documentatie',
-                'tags' => ['Documentatie'],
+                'tags' => ['documentatie'],
                 'image' => null,
                 'image_alt' => null,
                 'location' => [
@@ -140,7 +140,7 @@ class ExhibitionSeeder extends Seeder
                 'artist_name' => ['Diverse fotografen'],
                 'venue_name' => 'Ramses Shaffy Huis',
                 'description' => 'Fotografie',
-                'tags' => ['Fotografie'],
+                'tags' => ['fotografie'],
                 'image' => null,
                 'image_alt' => null,
                 'location' => [
@@ -155,7 +155,7 @@ class ExhibitionSeeder extends Seeder
                 'artist_name' => ['Diverse kunstenaars'],
                 'venue_name' => 'Galerie kunstRUIMTE',
                 'description' => 'Schilderij keramiek',
-                'tags' => ['schilderij', 'keramiek'],
+                'tags' => ['schilderijen', 'keramiek'],
                 'image' => null,
                 'image_alt' => null,
                 'location' => [
@@ -185,7 +185,7 @@ class ExhibitionSeeder extends Seeder
                 'artist_name' => ['MAMABIRD'],
                 'venue_name' => 'Studio Rob Visje',
                 'description' => 'Lithografie en acryl',
-                'tags' => ['Lithografie', 'acryl'],
+                'tags' => ['lithografie', 'acryl'],
                 'image' => null,
                 'image_alt' => null,
                 'location' => [
