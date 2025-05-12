@@ -9,8 +9,8 @@ class NewsRibbonController extends Controller
 {
     public function getActive()
     {
-        $newsRibbon = NewsRibbon::where('active', true)->first();
+        $newsRibbon = NewsRibbon::first();
 
-        return response()->json($newsRibbon ?: null);
+        return response()->json($newsRibbon);
     }
 }
