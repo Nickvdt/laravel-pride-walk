@@ -5,16 +5,29 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class TagController extends Controller
 {
-    public function index(Request $request) {
-        $tags = Tag::query();
-        if($request->requiredContentType) {
-            $this->applyRequiredContentType($tags, $request->requiredContentType);
-        }
-        return response()->json($tags->get());
+    public function index(Request $request)
+    {
+        $requiredContentType = $request->requiredContentType;
+        $cacheKey = 'tags_index_' . md5($requiredContentType);
+        $cacheDuration = 5;
+
+        $tags = Cache::remember($cacheKey, $cacheDuration, function () use ($request) {
+            $tagsQuery = Tag::query();
+
+            if ($request->has('requiredContentType')) {
+                $this->applyRequiredContentType($tagsQuery, $request->input('requiredContentType'));
+            }
+
+            return $tagsQuery->get();
+        });
+
+        return response()->json($tags);
     }
+
     public function applyRequiredContentType($tags, $requiredContentType) {
         if($requiredContentType === 'exhibitions') {
             return $tags->whereHas('exhibitions');
@@ -24,6 +37,7 @@ class TagController extends Controller
         }
         return $tags;
     }
+
     public function filter(Request $request)
     {
         $tagName = $request->input('tag');
