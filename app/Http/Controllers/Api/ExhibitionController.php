@@ -23,14 +23,15 @@ class ExhibitionController extends Controller
         ])->where('is_active', true);
 
         $tags = $request->input('tags');
-        $title = $request->input('title');
+        $searchTerm = $request->input('searchTerm');
 
         if ($tags) {
             $query = ApplyTags::ApplyFilters($query, $tags);
         }
 
-        if ($title) {
-            $query->where('title', 'LIKE', '%' . $title . '%');
+        if ($searchTerm) {
+            // for LIKE to work propperly you have to put the searchTerm in between %
+            $query->where('title', 'LIKE', '%' . $searchTerm . '%')->orWhere('description', 'LIKE', '%' . $searchTerm . '%');
         }
 
         return ExhibitionResource::collection(

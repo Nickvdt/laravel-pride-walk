@@ -8,8 +8,21 @@ use Illuminate\Http\Request;
 
 class TagController extends Controller
 {
-    public function index() {
-        return response()->json(Tag::all());
+    public function index(Request $request) {
+        $tags = Tag::query();
+        if($request->requiredContentType) {
+            $this->applyRequiredContentType($tags, $request->requiredContentType);
+        }
+        return response()->json($tags->get());
+    }
+    public function applyRequiredContentType($tags, $requiredContentType) {
+        if($requiredContentType === 'exhibitions') {
+            return $tags->whereHas('exhibitions');
+        }
+        if($requiredContentType === 'news') {
+            return $tags->whereHas('newsArticles');
+        }
+        return $tags;
     }
     public function filter(Request $request)
     {
