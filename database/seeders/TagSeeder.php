@@ -10,16 +10,14 @@ class TagSeeder extends Seeder
     public function run(): void
     {
         $tagNames = [
-            'Fotografie',
+            'fotografie',
             'schilderijen',
             'keramiek',
             'video',
             'sieraden',
-            'collage',
-            'Collages',
-            'Documentatie',
-            'Schilderij',
-            'Lithografie',
+            'collages',
+            'documentatie',
+            'lithografie',
             'acryl',
         ];
 
