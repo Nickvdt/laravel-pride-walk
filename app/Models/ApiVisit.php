@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class ApiVisit extends Model
 {
-    protected $fillable = ['endpoint', 'visit_count', 'visited_at'];
+    protected $fillable = ['endpoint', 'ip_address', 'visit_count', 'visited_at'];
 }
