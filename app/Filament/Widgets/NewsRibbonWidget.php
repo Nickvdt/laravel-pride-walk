@@ -51,7 +51,8 @@ class NewsRibbonWidget extends Widget implements HasForms
                 ->label('News Ribbon Text')
                 ->placeholder('Enter your news message here...')
                 ->toolbarButtons(['bold', 'italic', 'underline', 'link', 'list', 'orderedList'])
-                ->maxLength(255),
+                ->maxLength(255)
+                ->extraAttributes(['style' => 'min-height: 200px; height: 200px;']),
 
             Toggle::make('active')
                 ->label('Active')

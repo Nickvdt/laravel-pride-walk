@@ -13,7 +13,10 @@ class ListTeams extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->label('Add Team')
+                ->modalHeading('Create New Team')
+                ->modalButton('Create'),
         ];
     }
 }

@@ -13,7 +13,11 @@ class ListPartners extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->label('Add Partner')
+                ->modalHeading('Create New Partner')
+                ->modalButton('Create')
+                ->modalWidth('lg'),
         ];
     }
 }

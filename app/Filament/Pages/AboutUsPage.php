@@ -21,7 +21,7 @@ class AboutUsPage extends Page
     protected static ?string $navigationLabel = 'About Us';
     protected static ?string $slug = 'about-us';
     protected static string $view = 'filament.pages.about-us';
-    protected static ?string $navigationGroup = 'About Us Management';
+    protected static ?string $navigationGroup = 'About Us Page';
 
     public $description;
     public $email;

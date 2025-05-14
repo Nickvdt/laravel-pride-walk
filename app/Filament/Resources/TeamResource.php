@@ -12,6 +12,7 @@ use Filament\Tables\Table;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Card;
 
 class TeamResource extends Resource
 {
@@ -19,21 +20,24 @@ class TeamResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
     protected static ?string $navigationLabel = 'Teams';
-    protected static ?string $navigationGroup = 'About Us Management';
+    protected static ?string $navigationGroup = 'About Us Page';
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                TextInput::make('name')
-                    ->label('Team Name')
-                    ->required(),
-                FileUpload::make('photo')
-                    ->label('Team Photo')
-                    ->image()
-                    ->directory('teams')
-                    ->required(),
-            ]);
+        return $form->schema([
+            Card::make()
+                ->schema([
+                    TextInput::make('name')
+                        ->label('Team Name')
+                        ->required(),
+                    FileUpload::make('photo')
+                        ->label('Team Photo')
+                        ->image()
+                        ->directory('teams')
+                        ->required(),
+                ])
+                ->columnSpan('full'),
+        ]);
     }
 
     public static function table(Table $table): Table
@@ -48,31 +52,28 @@ class TeamResource extends Resource
                     ->size(50)
                     ->sortable(),
             ])
-            ->filters([
-                //
-            ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->label('Edit')
+                    ->modalHeading('Edit Team')
+                    ->modalButton('Save')
+                    ->modalWidth('lg'),
+                Tables\Actions\DeleteAction::make()
+                    ->label('Delete')
+                    ->modalHeading('Delete Team')
+                    ->modalButton('Delete')
+                    ->modalWidth('lg'),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\DeleteBulkAction::make()
+                    ->label('Delete Selected'),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
     }
 
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListTeams::route('/'),
-            'create' => Pages\CreateTeam::route('/create'),
-            'edit' => Pages\EditTeam::route('/{record}/edit'),
         ];
     }
 }
