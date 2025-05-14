@@ -4,7 +4,7 @@ namespace App\Filament\Widgets;
 
 use App\Models\NewsRibbon;
 use Filament\Forms;
-use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Toggle;
 use Filament\Notifications\Notification;
 use Filament\Widgets\Widget;
@@ -47,10 +47,11 @@ class NewsRibbonWidget extends Widget implements HasForms
     protected function getFormSchema(): array
     {
         return [
-            TextInput::make('text')
-                ->label('NewsRibbon')
-                ->maxLength(255)
-                ->placeholder('Enter your news message here'),
+            RichEditor::make('text')
+                ->label('News Ribbon Text')
+                ->placeholder('Enter your news message here...')
+                ->toolbarButtons(['bold', 'italic', 'underline', 'link', 'list', 'orderedList'])
+                ->maxLength(255),
 
             Toggle::make('active')
                 ->label('Active')

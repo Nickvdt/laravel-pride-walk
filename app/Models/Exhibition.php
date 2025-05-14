@@ -18,6 +18,7 @@ class Exhibition extends Model
         'location',
         'is_active',
         'image_alt',
+        'image_caption',
     ];
 
 

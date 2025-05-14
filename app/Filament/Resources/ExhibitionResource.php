@@ -37,18 +37,28 @@ class ExhibitionResource extends Resource
                         Card::make()
                             ->columnSpan(2)
                             ->schema([
-                                TextInput::make('title')->required()->columnSpan(1),
-                                TextInput::make('venue_name')->required()->columnSpan(1),
-                                TagsInput::make('artist_name')->label('Artist name(s)')->required()->placeholder('New Artist'),
-                                RichEditor::make('description'),
+                                TextInput::make('title')->required()->placeholder('Enter the title of the exhibition')->columnSpan(1),
+                                TextInput::make('venue_name')->required()->placeholder('Enter the name of the venue')->columnSpan(1),
+                                TagsInput::make('artist_name')->label('Artist name(s)')->required()->placeholder('Enter the name(s) of the artist(s)'),
+                                RichEditor::make('description')->placeholder('Write a detailed description'),
                                 MapPicker::make('location')->label('Select location'),
                             ]),
 
                         Card::make()
                             ->columnSpan(1)
                             ->schema([
-                                FileUpload::make('image')->image()->columnSpan(1),
-                                TextInput::make('image_alt')->label('Alt Text for image')->columnSpan(1),
+                                FileUpload::make('image')
+                                    ->label('Exhibition Image')
+                                    ->image()
+                                    ->columnSpan(1),
+                                TextInput::make('image_alt')
+                                    ->label('Alt Text for Image')
+                                    ->placeholder('Enter alternative text for the image')
+                                    ->columnSpan(1),
+                                TextInput::make('image_caption')
+                                    ->label('Image Caption')
+                                    ->placeholder('Enter a brief description for the image')
+                                    ->columnSpan(1),
                                 Select::make('tags')->label('Labels / Tags')->multiple()->relationship('tags', 'name')->searchable()->preload()->columnSpan(1),
                                 Toggle::make('is_active')->label('Active')->default(true)->columnSpan(1),
                             ]),
@@ -60,15 +70,14 @@ class ExhibitionResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('title')->sortable()->searchable(),
-                TextColumn::make('artist_name')->sortable(),
-                TextColumn::make('venue_name')->sortable(),
+                TextColumn::make('title')->label('Title')->sortable()->searchable(),
+                TextColumn::make('artist_name')->label('Artist Name')->sortable(),
+                TextColumn::make('venue_name')->label('Venue Name')->sortable(),
                 ToggleColumn::make('is_active')->label('Active'),
-                TextColumn::make('created_at')->dateTime(),
             ])
             ->filters([
                 TernaryFilter::make('is_active')
-                    ->label('Toon alleen actieve exposities')
+                    ->label('Show only active exhibitions')
                     ->nullable()
                     ->boolean(),
             ])
@@ -92,7 +101,7 @@ class ExhibitionResource extends Resource
             'index' => Pages\ListExhibitions::route('/'),
             'create' => Pages\CreateExhibition::route('/create'),
             'edit' => Pages\EditExhibition::route('/{record}/edit'),
-            'calendar' => Pages\ManageCalendar::route('/{record}/calendar'), 
+            'calendar' => Pages\ManageCalendar::route('/{record}/calendar'),
         ];
     }
 

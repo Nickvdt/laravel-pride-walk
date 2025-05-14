@@ -18,11 +18,11 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('image')->nullable();
             $table->string('image_alt')->nullable();
+            $table->string('image_caption')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
-
 
     /**
      * Reverse the migrations.

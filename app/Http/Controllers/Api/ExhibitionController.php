@@ -30,7 +30,6 @@ class ExhibitionController extends Controller
         }
 
         if ($searchTerm) {
-            // for LIKE to work propperly you have to put the searchTerm in between %
             $query->where('title', 'LIKE', '%' . $searchTerm . '%')->orWhere('description', 'LIKE', '%' . $searchTerm . '%');
         }
 

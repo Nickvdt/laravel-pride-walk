@@ -10,15 +10,18 @@ class TagSeeder extends Seeder
     public function run(): void
     {
         $tagNames = [
-            'fotografie',
-            'schilderijen',
-            'keramiek',
-            'video',
-            'sieraden',
-            'collages',
-            'documentatie',
-            'lithografie',
-            'acryl',
+            'Ceramics',
+            'Paintings',
+            'Drawings',
+            'Graphics',
+            'Textile',
+            'History',
+            'Installation',
+            'Jewelry',
+            'Mixed Media',
+            'Performance',
+            'Photography',
+            'Video'
         ];
 
         foreach ($tagNames as $name) {

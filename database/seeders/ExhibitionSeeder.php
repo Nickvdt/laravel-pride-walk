@@ -15,8 +15,21 @@ class ExhibitionSeeder extends Seeder
                 'title' => 'PEEKABOO', // 1
                 'artist_name' => ['Diverse kunstenaars'],
                 'venue_name' => 'Internationaal Theater Amsterdam',
-                'description' => 'Fotografie schilderijen keramiek video sieraden collage',
-                'tags' => ['fotografie', 'schilderijen', 'keramiek', 'video', 'sieraden', 'collages'],
+                'description' => 'No information available at this time.',
+                'tags' => [
+                    'Ceramics',
+                    'Paintings',
+                    'Drawings',
+                    'Graphics',
+                    'Textile',
+                    'History',
+                    'Installation',
+                    'Jewelry',
+                    'Mixed Media',
+                    'Performance',
+                    'Photography',
+                    'Video'
+                ],
                 'image' => null,
                 'image_alt' => null,
                 'location' => [
@@ -31,8 +44,8 @@ class ExhibitionSeeder extends Seeder
                 'title' => 'Art at Lutherse Kerk', // 2
                 'artist_name' => ['Arjan Spannenburg', 'Frans Franciscus', 'MVS'],
                 'venue_name' => 'Oude Lutherse Kerk',
-                'description' => 'Fotografie, keramiek video',
-                'tags' => ['fotografie', 'keramiek', 'video'],
+                'description' => 'No information available at this time.',
+                'tags' => ['Photography', 'Ceramics', 'Video'],
                 'image' => null,
                 'image_alt' => null,
                 'location' => [
@@ -46,8 +59,8 @@ class ExhibitionSeeder extends Seeder
                 'title' => 'WALLPAPER', // 3
                 'artist_name' => ['Ton of Holland'],
                 'venue_name' => 'Galerie MAI',
-                'description' => 'Schilderijen',
-                'tags' => ['schilderijen'],
+                'description' => 'No information available at this time.',
+                'tags' => ['Graphics', 'Drawings', 'Textile'],
                 'image' => null,
                 'image_alt' => null,
                 'location' => [
@@ -62,8 +75,8 @@ class ExhibitionSeeder extends Seeder
                 'title' => 'Dans volk', // 4
                 'artist_name' => ['Maxime de Waal'],
                 'venue_name' => 'Hotel Mercier',
-                'description' => 'Fotografie',
-                'tags' => ['fotografie'],
+                'description' => 'No information available at this time.',
+                'tags' => ['Photography'],
                 'image' => null,
                 'image_alt' => null,
                 'location' => [
@@ -77,8 +90,8 @@ class ExhibitionSeeder extends Seeder
                 'title' => 'MY FETISH EYE', // 5
                 'artist_name' => ['Gabriel Batenburg'],
                 'venue_name' => 'Mr. B',
-                'description' => 'Fotografie',
-                'tags' => ['fotografie'],
+                'description' => 'No information available at this time.',
+                'tags' => ['Photography'],
                 'image' => null,
                 'image_alt' => null,
                 'location' => [
@@ -93,8 +106,8 @@ class ExhibitionSeeder extends Seeder
                 'title' => '50 jaar PAUL DERREz', // 6
                 'artist_name' => ['Paul Derrez'],
                 'venue_name' => 'THE WEARHOUSE',
-                'description' => 'Sieraden',
-                'tags' => ['Sieraden'],
+                'description' => 'No information available at this time.',
+                'tags' => ['Jewelry'],
                 'image' => null,
                 'image_alt' => null,
                 'location' => [
@@ -124,8 +137,8 @@ class ExhibitionSeeder extends Seeder
                 'title' => 'Roze Reuzen', // 8
                 'artist_name' => ['Uit archief IHLIA'],
                 'venue_name' => 'IHLIA 143 (3e verdieping)',
-                'description' => 'Documentatie',
-                'tags' => ['documentatie'],
+                'description' => 'No information available at this time.',
+                'tags' => ['history'],
                 'image' => null,
                 'image_alt' => null,
                 'location' => [
@@ -139,8 +152,8 @@ class ExhibitionSeeder extends Seeder
                 'title' => 'MOREPIXX', // 9
                 'artist_name' => ['Diverse fotografen'],
                 'venue_name' => 'Ramses Shaffy Huis',
-                'description' => 'Fotografie',
-                'tags' => ['fotografie'],
+                'description' => 'No information available at this time.',
+                'tags' => ['Photography'],
                 'image' => null,
                 'image_alt' => null,
                 'location' => [
@@ -154,8 +167,8 @@ class ExhibitionSeeder extends Seeder
                 'title' => 'KUNSTRUIM', // 10
                 'artist_name' => ['Diverse kunstenaars'],
                 'venue_name' => 'Galerie kunstRUIMTE',
-                'description' => 'Schilderij keramiek',
-                'tags' => ['schilderijen', 'keramiek'],
+                'description' => 'No information available at this time.',
+                'tags' => ['Ceramics', 'Paintings', 'Drawings'],
                 'image' => null,
                 'image_alt' => null,
                 'location' => [
@@ -169,8 +182,8 @@ class ExhibitionSeeder extends Seeder
                 'title' => '*DIED*', // 11
                 'artist_name' => ['Diederik Verbakel'],
                 'venue_name' => 'Stadszwanen',
-                'description' => '',
-                'tags' => [],
+                'description' => 'No information available at this time.',
+                'tags' => ['Mixed Media', 'Textile'],
                 'image' => null,
                 'image_alt' => null,
                 'location' => [
@@ -184,8 +197,8 @@ class ExhibitionSeeder extends Seeder
                 'title' => 'MAMABIRD', // 12
                 'artist_name' => ['MAMABIRD'],
                 'venue_name' => 'Studio Rob Visje',
-                'description' => 'Lithografie en acryl',
-                'tags' => ['lithografie', 'acryl'],
+                'description' => 'No information available at this time.',
+                'tags' => ['Paintings'],
                 'image' => null,
                 'image_alt' => null,
                 'location' => [
@@ -199,8 +212,8 @@ class ExhibitionSeeder extends Seeder
                 'title' => 'MARTIN AT FREE WILLY', // 13
                 'artist_name' => ['Martin of Holland'],
                 'venue_name' => 'Free Willie',
-                'description' => '',
-                'tags' => [],
+                'description' => 'No information available at this time.',
+                'tags' => ['Drawings'],
                 'image' => null,
                 'image_alt' => null,
                 'location' => [
@@ -214,8 +227,8 @@ class ExhibitionSeeder extends Seeder
                 'title' => 'Gemma Leys en Bastiënne Kramer', // 14
                 'artist_name' => ['Gemma Leys', 'Bastiënne Kramer'],
                 'venue_name' => 'Prinsengracht Atelier',
-                'description' => 'schilderijen / keramiek',
-                'tags' => ['schilderijen', 'keramiek'],
+                'description' => 'No information available at this time.',
+                'tags' => ['Paintings'],
                 'image' => null,
                 'image_alt' => null,
                 'location' => [
@@ -229,8 +242,8 @@ class ExhibitionSeeder extends Seeder
                 'title' => 'PERFORMANCE', // 15
                 'artist_name' => ['Jesse Asselman'],
                 'venue_name' => 'Het Grachten Museum',
-                'description' => 'geen informatie',
-                'tags' => [],
+                'description' => 'No information available at this time.',
+                'tags' => ['Performance'],
                 'image' => null,
                 'image_alt' => null,
                 'location' => [
@@ -244,8 +257,8 @@ class ExhibitionSeeder extends Seeder
                 'title' => 'onbekend', // 16
                 'artist_name' => ['Ronald Eduart', 'Soek Zet'],
                 'venue_name' => 'Oudezijds Voorburgwal',
-                'description' => 'geen informatie',
-                'tags' => [],
+                'description' => 'No information available at this time.',
+                'tags' => ['Textile', 'Installation'],
                 'image' => null,
                 'image_alt' => null,
                 'location' => [
@@ -259,8 +272,8 @@ class ExhibitionSeeder extends Seeder
                 'title' => 'Prins de Vos', // 17
                 'artist_name' => ['Prins de Vos'],
                 'venue_name' => 'De Melkweg',
-                'description' => 'geen informatie',
-                'tags' => [],
+                'description' => 'No information available at this time.',
+                'tags' => ['Photography'],
                 'image' => null,
                 'image_alt' => null,
                 'location' => [
@@ -274,7 +287,7 @@ class ExhibitionSeeder extends Seeder
                 'title' => 'TIM&RISK&DEVON', // 18
                 'artist_name' => ['Tim Weerdeburg', 'Risk Hazenkamp', 'Devon Ress'],
                 'venue_name' => 'ARTHOTEL',
-                'description' => 'geen informatie',
+                'description' => 'No information available at this time.',
                 'tags' => [],
                 'image' => null,
                 'image_alt' => null,
@@ -289,8 +302,8 @@ class ExhibitionSeeder extends Seeder
                 'title' => 'MEN BY NIELS', // 19
                 'artist_name' => ['Niels Smits van Burgst'],
                 'venue_name' => 'HOXTON',
-                'description' => 'geen informatie',
-                'tags' => [],
+                'description' => 'No information available at this time.',
+                'tags' => ['Photography', 'Paintings', 'Drawings'],
                 'image' => null,
                 'image_alt' => null,
                 'location' => [
@@ -304,7 +317,7 @@ class ExhibitionSeeder extends Seeder
                 'title' => 'Athenaeum', // 20
                 'artist_name' => ['onbekend'],
                 'venue_name' => 'Spui 14-16',
-                'description' => 'geen informatie',
+                'description' => 'No information available at this time.',
                 'tags' => [],
                 'image' => null,
                 'image_alt' => null,
@@ -319,8 +332,8 @@ class ExhibitionSeeder extends Seeder
                 'title' => 'Queer Surinaamse Kunst', // 21
                 'artist_name' => ['Queer Surinaamse Kunst'],
                 'venue_name' => 'H’art',
-                'description' => 'geen informatie',
-                'tags' => [],
+                'description' => 'No information available at this time.',
+                'tags' => ['Paintings'],
                 'image' => null,
                 'image_alt' => null,
                 'location' => [
@@ -334,8 +347,8 @@ class ExhibitionSeeder extends Seeder
                 'title' => 'Pedro Matias', // 22
                 'artist_name' => ['Pedro Matias'],
                 'venue_name' => 'Hotel Bunk',
-                'description' => 'geen informatie',
-                'tags' => [],
+                'description' => 'No information available at this time.',
+                'tags' => ['Mixed Media'],
                 'image' => null,
                 'image_alt' => null,
                 'location' => [
@@ -349,8 +362,8 @@ class ExhibitionSeeder extends Seeder
                 'title' => 'COCK IN NORTH', // 23
                 'artist_name' => ['Martijn Overweel'],
                 'venue_name' => 'Tiny Showroom',
-                'description' => 'geen informatie',
-                'tags' => [],
+                'description' => 'No information available at this time.',
+                'tags' => ['Installation'],
                 'image' => null,
                 'image_alt' => null,
                 'location' => [
@@ -364,7 +377,7 @@ class ExhibitionSeeder extends Seeder
                 'title' => 'onbekend', // 24
                 'artist_name' => ['Harry van Gestel'],
                 'venue_name' => 'Palmstraat',
-                'description' => 'geen informatie',
+                'description' => 'No information available at this time.',
                 'tags' => [],
                 'image' => null,
                 'image_alt' => null,
@@ -379,8 +392,8 @@ class ExhibitionSeeder extends Seeder
                 'title' => 'Matthias Herrmann', // 25
                 'artist_name' => ['Matthias Herrmann'],
                 'venue_name' => 'Serieuze Zaken Galerie',
-                'description' => 'geen informatie',
-                'tags' => [],
+                'description' => 'No information available at this time.',
+                'tags' => ['Photography'],
                 'image' => null,
                 'image_alt' => null,
                 'location' => [

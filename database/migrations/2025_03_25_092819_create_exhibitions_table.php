@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->boolean('is_active')->default(true);
             $table->string('image')->nullable();
             $table->string('image_alt')->nullable();
+            $table->string('image_caption')->nullable();
             $table->timestamps();
         });
         

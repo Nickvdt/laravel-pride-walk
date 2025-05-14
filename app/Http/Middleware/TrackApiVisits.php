@@ -14,7 +14,6 @@ class TrackApiVisits
         $ipAddress = $request->ip();
         $today = now()->toDateString();
 
-        // Zoek of er al een bezoek van dit IP is geregistreerd vandaag
         $visit = ApiVisit::firstOrCreate(
             [
                 'endpoint' => $endpoint,
@@ -24,7 +23,6 @@ class TrackApiVisits
             ['visit_count' => 0]
         );
 
-        // Tel alleen op als het IP vandaag nog niet is geregistreerd
         if ($visit->wasRecentlyCreated) {
             $visit->increment('visit_count');
         }

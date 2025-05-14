@@ -16,6 +16,7 @@ class NewsArticle extends Model
         'image',
         'image_alt',
         'is_active',
+        'image_caption',
     ];
 
     protected $casts = [

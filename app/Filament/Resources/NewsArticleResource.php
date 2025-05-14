@@ -36,16 +36,20 @@ class NewsArticleResource extends Resource
                         Card::make()
                             ->columnSpan(2)
                             ->schema([
-                                TextInput::make('title')->required(),
-                                RichEditor::make('description'),
-                                FileUpload::make('image')->image(),
-                                TextInput::make('image_alt')->label('Alt Text for image'),
+                                TextInput::make('title')->placeholder('Enter the title of the news article')->required(),
+                                RichEditor::make('description')->placeholder('Write the news content'),
+                                FileUpload::make('image')->image()->label('News Article Image'),
+                                TextInput::make('image_alt')->label('Alt Text for Image')->placeholder('Enter alternative text for the image'),
+                                TextInput::make('image_caption')
+                                    ->label('Image Caption')
+                                    ->placeholder('Enter a brief description for the image')
+                                    ->columnSpan(1),
                             ]),
 
                         Card::make()
                             ->columnSpan(1)
                             ->schema([
-                                DatePicker::make('date')->required(),
+                                DatePicker::make('date')->placeholder('Select the publication date')->required(),
                                 Select::make('tags')->label('Labels / Tags')->multiple()->relationship('tags', 'name')->searchable()->preload(),
                                 Toggle::make('is_active')->label('Active')->default(true),
                             ]),
@@ -57,15 +61,15 @@ class NewsArticleResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('title')->sortable()->searchable(),
-                TextColumn::make('description')->limit(50)->formatStateUsing(fn($state) => strip_tags($state)),
-                ImageColumn::make('image')->circular(),
+                TextColumn::make('title')->label('Title')->sortable()->searchable(),
+                TextColumn::make('description')->label('Description')->limit(50)->formatStateUsing(fn($state) => strip_tags($state)),
+                ImageColumn::make('image')->label('Image')->circular(),
                 ToggleColumn::make('is_active')->label('Active'),
-                TextColumn::make('date')->date()->sortable(),
+                TextColumn::make('date')->label('Date')->date()->sortable(),
             ])
             ->filters([
                 TernaryFilter::make('is_active')
-                    ->label('Toon alleen actieve artikelen')
+                    ->label('Show only active articles')
                     ->nullable()
                     ->boolean(),
             ])
@@ -77,7 +81,7 @@ class NewsArticleResource extends Resource
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-    
+
 
     public static function getRelations(): array
     {
