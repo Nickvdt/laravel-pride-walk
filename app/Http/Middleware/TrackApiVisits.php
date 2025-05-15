@@ -14,17 +14,18 @@ class TrackApiVisits
         $ipAddress = $request->ip();
         $today = now()->toDateString();
 
-        $visit = ApiVisit::firstOrCreate(
-            [
+        $visit = ApiVisit::where('endpoint', $endpoint)
+            ->where('ip_address', $ipAddress)
+            ->whereDate('visited_at', $today)
+            ->first();
+
+        if (!$visit) {
+            ApiVisit::create([
                 'endpoint' => $endpoint,
                 'ip_address' => $ipAddress,
                 'visited_at' => $today,
-            ],
-            ['visit_count' => 0]
-        );
-
-        if ($visit->wasRecentlyCreated) {
-            $visit->increment('visit_count');
+                'visit_count' => 1,
+            ]);
         }
 
         return $next($request);
