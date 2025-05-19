@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class AboutUs extends Model
 {
     protected $table = 'about_us';
-    protected $fillable = ['description', 'email'];
+    protected $fillable = ['description', 'email', 'image'];
 
     // Relaties zonder pivot tabel
     public function teams()
@@ -18,5 +18,9 @@ class AboutUs extends Model
     public function partners()
     {
         return $this->belongsToMany(Partner::class, 'about_us_partner', 'about_us_id', 'partner_id');
+    }
+    public function getImageUrlAttribute()
+    {
+        return $this->image ? asset('storage/' . $this->image) : null;
     }
 }

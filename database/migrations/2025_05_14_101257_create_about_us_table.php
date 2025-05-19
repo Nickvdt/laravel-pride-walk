@@ -11,6 +11,7 @@ return new class extends Migration {
             $table->id();
             $table->text('description')->nullable(); 
             $table->string('email')->nullable();
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
