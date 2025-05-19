@@ -4,26 +4,27 @@ namespace App\Http\Middleware;
 
 use App\Models\ApiVisit;
 use Closure;
-use Illuminate\Support\Facades\Log;
 
 class TrackApiVisits
 {
     public function handle($request, Closure $next)
     {
         $endpoint = $request->path();
-        $ipAddress = $request->ip();
-        $today = now()->toDateString();
+        $ipAddressHash = hash('sha256', $request->ip());
+        $now = now();
 
-        $visit = ApiVisit::where('endpoint', $endpoint)
-            ->where('ip_address', $ipAddress)
-            ->whereDate('visited_at', $today)
+        // Zoek bezoek binnen de laatste 30 minuten
+        $recentVisit = ApiVisit::where('endpoint', $endpoint)
+            ->where('ip_address', $ipAddressHash)
+            ->where('visited_at', '>=', $now->subMinutes(30))
             ->first();
 
-        if (!$visit) {
+        if (!$recentVisit) {
+            // Geen recent bezoek, dus opslaan
             ApiVisit::create([
                 'endpoint' => $endpoint,
-                'ip_address' => $ipAddress,
-                'visited_at' => $today,
+                'ip_address' => $ipAddressHash,
+                'visited_at' => $now,
                 'visit_count' => 1,
             ]);
         }

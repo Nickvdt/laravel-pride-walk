@@ -9,7 +9,6 @@ class AboutUs extends Model
     protected $table = 'about_us';
     protected $fillable = ['description', 'email', 'image'];
 
-    // Relaties zonder pivot tabel
     public function teams()
     {
         return $this->belongsToMany(Team::class, 'about_us_team', 'about_us_id', 'team_id');

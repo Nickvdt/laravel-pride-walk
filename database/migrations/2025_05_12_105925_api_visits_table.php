@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->string('endpoint');
             $table->string('ip_address');
             $table->integer('visit_count')->default(1);
-            $table->date('visited_at');
+            $table->dateTime('visited_at');
             $table->timestamps();
         });
     }

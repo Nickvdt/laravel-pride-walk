@@ -23,7 +23,6 @@ class ApiVisitChartWidget extends BarChartWidget
     {
         $period = $this->filter ?? 'week';
 
-        // Start- en einddatum berekenen
         switch ($period) {
             case 'month':
                 $startDate = Carbon::now()->startOfMonth();
@@ -37,10 +36,10 @@ class ApiVisitChartWidget extends BarChartWidget
                 break;
         }
 
-        $visits = ApiVisit::whereDate('visited_at', '>=', $startDate)
-            ->selectRaw('visited_at, SUM(visit_count) as total')
-            ->groupBy('visited_at')
-            ->orderBy('visited_at')
+        $visits = ApiVisit::where('visited_at', '>=', $startDate)
+            ->selectRaw("DATE(visited_at) as date, SUM(visit_count) as total")
+            ->groupBy('date')
+            ->orderBy('date')
             ->get();
 
         $backgroundColor = '#f97316';
@@ -48,9 +47,7 @@ class ApiVisitChartWidget extends BarChartWidget
         $barPercentage = count($visits) === 1 ? 0.5 : 0.8;
 
         return [
-            'labels' => $visits->pluck('visited_at')->map(function ($date) {
-                return Carbon::parse($date)->format('Y-m-d');
-            })->toArray(),
+            'labels' => $visits->pluck('date')->toArray(),
             'datasets' => [
                 [
                     'label' => 'Visits',

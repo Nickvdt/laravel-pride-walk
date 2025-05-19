@@ -16,13 +16,12 @@ class AboutUsController extends Controller
                 return response()->json(['message' => 'About Us not found'], 404);
             }
 
-            // Haal alleen de bestandsnaam op
-            $image = $aboutUs->image ? basename($aboutUs->image) : null;
+            $image = $aboutUs->image ? 'about_us_images/' . basename($aboutUs->image) : null;
 
             return response()->json([
                 'description' => $aboutUs->description,
                 'email' => $aboutUs->email,
-                'image' => $image,  // Alleen de bestandsnaam
+                'image' => $image,
                 'teams' => $aboutUs->teams,
                 'partners' => $aboutUs->partners,
             ]);
