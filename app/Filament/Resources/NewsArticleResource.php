@@ -49,7 +49,10 @@ class NewsArticleResource extends Resource
                         Card::make()
                             ->columnSpan(1)
                             ->schema([
-                                DatePicker::make('date')->placeholder('Select the publication date')->required(),
+                                DatePicker::make('date')
+                                    ->placeholder('Select the publication date')
+                                    ->default(now())
+                                    ->required(),
                                 Select::make('tags')->label('Labels / Tags')->multiple()->relationship('tags', 'name')->searchable()->preload(),
                                 Toggle::make('is_active')->label('Active')->default(true),
                             ]),

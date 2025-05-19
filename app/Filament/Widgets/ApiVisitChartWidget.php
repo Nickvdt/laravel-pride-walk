@@ -48,7 +48,9 @@ class ApiVisitChartWidget extends BarChartWidget
         $barPercentage = count($visits) === 1 ? 0.5 : 0.8;
 
         return [
-            'labels' => $visits->pluck('visited_at')->toArray(),
+            'labels' => $visits->pluck('visited_at')->map(function ($date) {
+                return Carbon::parse($date)->format('Y-m-d');
+            })->toArray(),
             'datasets' => [
                 [
                     'label' => 'Visits',
