@@ -47,42 +47,58 @@ class ExhibitionResource extends JsonResource
         ];
     }
 
-    protected function getExpandedSchedules(): array
-    {
-        $schedules = $this->schedules;
-        $expanded = [];
+ protected function getExpandedSchedules(): array
+{
+    $schedules = $this->schedules;
+    $expanded = [];
+    $datesSeen = [];
 
-        foreach ($schedules as $schedule) {
-            try {
-                $items = ScheduleExpander::expand($schedule, 50);
-                foreach ($items as $item) {
-                    // Verwijder de tijd uit de datum als die erin zit
-                    $dateOnly = explode(' ', $item['date'])[0];
+    foreach ($schedules as $schedule) {
+        try {
+            $items = ScheduleExpander::expand($schedule, 50);
 
-                    // Gebruik UNIX-timestamp voor de tijden
-                    $start = strtotime($dateOnly . ' ' . $item['start_time']);
-                    $end = strtotime($dateOnly . ' ' . $item['end_time']);
+            foreach ($items as $item) {
+                $dateOnly = explode(' ', $item['date'])[0];
 
+                $start = strtotime($dateOnly . ' ' . $item['start_time']);
+                $end = strtotime($dateOnly . ' ' . $item['end_time']);
+
+                // Special events altijd meenemen
+                if ($schedule->is_special_event) {
                     $expanded[] = [
-                        'date' => $item['date'],
-                        'start_time' => $start,    // Gebruik UNIX-timestamp
-                        'end_time' => $end,        // Gebruik UNIX-timestamp
-                        'is_special_event' => $schedule->is_special_event,
+                        'date' => $dateOnly,
+                        'start_time' => $start,
+                        'end_time' => $end,
+                        'is_special_event' => true,
                         'special_event_description' => $schedule->special_event_description,
                     ];
+                    continue;
                 }
-            } catch (\Exception $e) {
-                // Log de fout
-                Log::error("Fout tijdens expanderen van schedules", [
-                    'schedule_id' => $schedule->id,
-                    'title' => $schedule->exhibition->title ?? 'Onbekend',
-                    'error' => $e->getMessage(),
-                ]);
+
+                // Normale events: alleen als deze datum nog niet eerder is toegevoegd
+                if (!in_array($dateOnly, $datesSeen)) {
+                    $datesSeen[] = $dateOnly;
+                    $expanded[] = [
+                        'date' => $dateOnly,
+                        'start_time' => $start,
+                        'end_time' => $end,
+                        'is_special_event' => false,
+                        'special_event_description' => null,
+                    ];
+                }
             }
+        } catch (\Exception $e) {
+            Log::error("Fout tijdens expanderen van schedules", [
+                'schedule_id' => $schedule->id,
+                'title' => $schedule->exhibition->title ?? 'Onbekend',
+                'error' => $e->getMessage(),
+            ]);
         }
-
-        usort($expanded, fn($a, $b) => $a['start_time'] <=> $b['start_time']);
-
-        return $expanded;
     }
+
+    usort($expanded, fn($a, $b) => $a['start_time'] <=> $b['start_time']);
+
+    return $expanded;
+}
+
 }
