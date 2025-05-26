@@ -280,7 +280,7 @@
                 'SA': 6,
                 'SU': 0
             };
-            const allowedWeekdays = byDayRaw.split(',').map(d => weekdayMap[d]).filter(Boolean);
+            const allowedWeekdays = byDayRaw.split(',').map(d => weekdayMap[d]).filter(d => d !== undefined);
 
             const startDate = new Date(startDateStr);
             const endDate = new Date(until.slice(0, 4), until.slice(4, 6) - 1, until.slice(6, 8));
