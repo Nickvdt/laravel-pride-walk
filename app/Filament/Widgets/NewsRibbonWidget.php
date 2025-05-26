@@ -50,9 +50,12 @@ class NewsRibbonWidget extends Widget implements HasForms
             RichEditor::make('text')
                 ->label('News Ribbon Text')
                 ->placeholder('Enter your news message here...')
-                ->toolbarButtons(['bold', 'italic', 'underline', 'link', 'list', 'orderedList'])
+                ->toolbarButtons(['bold', 'italic', 'underline', 'link', 'list'])
                 ->maxLength(255)
-                ->extraAttributes(['style' => 'min-height: 200px; height: 200px;']),
+                    ->extraAttributes([
+                        'x-on:keydown.enter.prevent' => '',
+                        'style' => 'min-height: 200px; height: 100px; overflow: hidden;',
+                    ]),
 
             Toggle::make('active')
                 ->label('Active')
