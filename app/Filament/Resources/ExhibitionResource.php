@@ -20,6 +20,12 @@ use Illuminate\Support\Facades\Log;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Forms\Components\Select;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use pxlrbt\FilamentExcel\Exports\ExcelExport;
+use pxlrbt\FilamentExcel\Columns\Column;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportAction;
+
+
 
 
 class ExhibitionResource extends Resource
@@ -85,11 +91,58 @@ class ExhibitionResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
+            ->headerActions([
+                ExportAction::make('exporteren')
+                    ->label('Exporteer alles')
+                    ->exports([
+                        ExcelExport::make()
+                            ->fromTable()
+                            ->withFilename('exhibition-export')
+                            ->modifyQueryUsing(fn($query) => $query->with('schedules'))
+                            ->withColumns([
+                                Column::make('title')->heading('Title'),
+                                Column::make('artist_name')->heading('Artist Name'),
+                                Column::make('venue_name')->heading('Venue Name'),
+                                Column::make('description')->heading('Description')->formatStateUsing(fn($state) => strip_tags($state)),
+                                Column::make('location')
+                                    ->heading('Location')
+                                    ->formatStateUsing(fn($state) => json_encode($state)),
+                                Column::make('image_alt')->heading('Alt Text'),
+                                Column::make('image_caption')->heading('Image Caption'),
+                                Column::make('is_active')
+                                    ->heading('Active')
+                                    ->formatStateUsing(fn($state) => $state ? 'Ja' : 'Nee'),
+                                Column::make('formatted_schedule')->heading('Openingstijden'),
+                            ]),
+                    ]),
+            ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
+                ExportBulkAction::make()
+                    ->label('Exporteer selectie')
+                    ->exports([
+                        ExcelExport::make()
+                            ->fromTable()
+                            ->withFilename('exhibition-selection-export')
+                            ->modifyQueryUsing(fn($query) => $query->with('schedules'))
+                            ->withColumns([
+                                Column::make('title')->heading('Title'),
+                                Column::make('artist_name')->heading('Artist Name'),
+                                Column::make('venue_name')->heading('Venue Name'),
+                                Column::make('description')->heading('Description')->formatStateUsing(fn($state) => strip_tags($state)),
+                                Column::make('location')
+                                    ->heading('Location')
+                                    ->formatStateUsing(fn($state) => json_encode($state)),
+                                Column::make('image_alt')->heading('Alt Text'),
+                                Column::make('image_caption')->heading('Image Caption'),
+                                Column::make('is_active')
+                                    ->heading('Active')
+                                    ->formatStateUsing(fn($state) => $state ? 'Ja' : 'Nee'),
+                                Column::make('formatted_schedule')->heading('Openingstijden'),
+                            ]),
+                    ]),
             ]);
     }
-
     public static function getRelations(): array
     {
         return [];
