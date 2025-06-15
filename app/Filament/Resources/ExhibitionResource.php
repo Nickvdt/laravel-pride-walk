@@ -65,7 +65,20 @@ class ExhibitionResource extends Resource
                                     ->label('Image Caption')
                                     ->placeholder('Enter a brief description for the image')
                                     ->columnSpan(1),
-                                Select::make('tags')->label('Labels / Tags')->multiple()->relationship('tags', 'name')->searchable()->preload()->columnSpan(1),
+                                Select::make('tags')
+                                    ->label('Labels / Tags')
+                                    ->multiple()
+                                    ->searchable()
+                                    ->preload()
+                                    ->relationship('tags', 'name')
+                                    ->options(function () {
+                                        return \App\Models\Tag::all()->mapWithKeys(function ($tag) {
+                                            return [
+                                                $tag->id => $tag->name ?: 'Afbeelding-tag (#' . $tag->id . ')',
+                                            ];
+                                        });
+                                    })
+                                    ->columnSpan(1),
                                 Toggle::make('is_active')->label('Active')->default(true)->columnSpan(1),
                             ]),
                     ])

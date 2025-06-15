@@ -40,6 +40,7 @@ class ExhibitionResource extends JsonResource
                 return [
                     'id' => $tag->id,
                     'name' => $tag->name,
+                    'image' => $tag->image,
                 ];
             }),
             'created_at' => $this->created_at,

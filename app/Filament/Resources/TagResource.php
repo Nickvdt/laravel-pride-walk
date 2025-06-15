@@ -8,7 +8,9 @@ use Filament\Forms;
 use Filament\Tables;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ImageColumn;
 
 class TagResource extends Resource
 {
@@ -21,9 +23,16 @@ class TagResource extends Resource
     {
         return $form->schema([
             TextInput::make('name')
-                ->required()
-                ->unique(ignoreRecord: true)
-                ->label('Tag Name'),
+                ->label('Tag Name')
+                ->maxLength(255)
+                ->nullable(),
+
+            FileUpload::make('image')
+                ->label('Tag Image')
+                ->image()
+                ->directory('tags')
+                ->imagePreviewHeight('100')
+                ->nullable(),
         ]);
     }
 
@@ -31,7 +40,9 @@ class TagResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->sortable()->searchable()->label('Name'),
+                TextColumn::make('id')->label('ID')->sortable(),
+                TextColumn::make('name')->label('Name')->sortable()->searchable(),
+                ImageColumn::make('image')->label('Image')->height(40),
                 TextColumn::make('created_at')->dateTime()->label('Created At'),
             ])
             ->actions([

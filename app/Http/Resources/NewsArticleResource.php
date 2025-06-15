@@ -21,6 +21,7 @@ class NewsArticleResource extends JsonResource
                 return [
                     'id' => $tag->id,
                     'name' => $tag->name,
+                    'image' => $tag->image,
                 ];
             }),
             'is_active' => $this->is_active,

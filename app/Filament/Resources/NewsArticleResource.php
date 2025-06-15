@@ -53,7 +53,19 @@ class NewsArticleResource extends Resource
                                     ->placeholder('Select the publication date')
                                     ->default(now())
                                     ->required(),
-                                Select::make('tags')->label('Labels / Tags')->multiple()->relationship('tags', 'name')->searchable()->preload(),
+                                Select::make('tags')
+                                    ->label('Labels / Tags')
+                                    ->multiple()
+                                    ->searchable()
+                                    ->preload()
+                                    ->relationship('tags', 'name')
+                                    ->options(function () {
+                                        return \App\Models\Tag::all()->mapWithKeys(function ($tag) {
+                                            return [
+                                                $tag->id => $tag->name ?: 'Afbeelding-tag (#' . $tag->id . ')',
+                                            ];
+                                        });
+                                    }),
                                 Toggle::make('is_active')->label('Active')->default(true),
                             ]),
                     ])
