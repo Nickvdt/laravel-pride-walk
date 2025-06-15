@@ -45,7 +45,19 @@ class ExhibitionResource extends Resource
                             ->schema([
                                 TextInput::make('title')->required()->placeholder('Enter the title of the exhibition')->columnSpan(1),
                                 TextInput::make('venue_name')->required()->placeholder('Enter the name of the venue')->columnSpan(1),
-                                TagsInput::make('artist_name')->label('Artist name(s)')->required()->placeholder('Enter the name(s) of the artist(s)'),
+                                TagsInput::make('artist_name')
+                                    ->label('Artist name(s)')
+                                    ->required()
+                                    ->placeholder('Enter the name(s) of the artist(s)')
+                                    ->suggestions(
+                                        \App\Models\Exhibition::query()
+                                            ->pluck('artist_name')
+                                            ->flatten()
+                                            ->unique()
+                                            ->filter()
+                                            ->values()
+                                            ->toArray()
+                                    ),
                                 RichEditor::make('description')->placeholder('Write a detailed description'),
                                 MapPicker::make('location')->label('Select location'),
                             ]),
